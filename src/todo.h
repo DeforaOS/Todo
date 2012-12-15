@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2011 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2009-2012 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,16 +46,19 @@ typedef enum _TodoView
 
 
 /* functions */
-Todo * todo_new(void);
+Todo * todo_new(GtkWidget * window, GtkAccelGroup * group);
 void todo_delete(Todo * todo);
 
 /* accessors */
 TodoView todo_get_view(Todo * todo);
+GtkWidget * todo_get_widget(Todo * todo);
 void todo_set_view(Todo * todo, TodoView view);
 
 /* useful */
 void todo_about(Todo * todo);
 int todo_error(Todo * todo, char const * message, int ret);
+
+void todo_show_preferences(Todo * todo, gboolean show);
 
 /* tasks */
 Task * todo_task_add(Todo * todo, Task * task);

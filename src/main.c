@@ -20,7 +20,8 @@
 #include <locale.h>
 #include <libintl.h>
 #include <gtk/gtk.h>
-#include "todo.h"
+#include <System.h>
+#include "window.h"
 #include "../config.h"
 #define _(string) gettext(string)
 
@@ -38,6 +39,19 @@
 
 /* private */
 /* functions */
+/* todo */
+static int _todo(void)
+{
+	TodoWindow * todo;
+
+	if((todo = todowindow_new()) == NULL)
+		return error_print(PACKAGE);
+	gtk_main();
+	todowindow_delete(todo);
+	return 0;
+}
+
+
 /* usage */
 static int _usage(void)
 {
@@ -52,7 +66,6 @@ static int _usage(void)
 int main(int argc, char * argv[])
 {
 	int o;
-	Todo * todo;
 
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -66,9 +79,5 @@ int main(int argc, char * argv[])
 		}
 	if(optind != argc)
 		return _usage();
-	if((todo = todo_new()) == NULL)
-		return 2;
-	gtk_main();
-	todo_delete(todo);
-	return 0;
+	return (_todo() == 0) ? 0 : 2;
 }

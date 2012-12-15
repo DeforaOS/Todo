@@ -2,6 +2,7 @@ TARGETS	= todo
 PREFIX	= /usr/local
 DESTDIR	=
 BINDIR	= $(PREFIX)/bin
+SBINDIR	= $(PREFIX)/sbin
 CC	?= cc
 CPPFLAGSF?=
 CPPFLAGS?=
@@ -17,7 +18,7 @@ INSTALL	?= install
 
 all: $(TARGETS)
 
-todo_OBJS = task.o taskedit.o todo.o callbacks.o main.o
+todo_OBJS = task.o taskedit.o todo.o window.o main.o
 todo_CFLAGS = $(CPPFLAGSF) $(CPPFLAGS) $(CFLAGSF) $(CFLAGS)
 todo_LDFLAGS = $(LDFLAGSF) $(LDFLAGS)
 
@@ -25,16 +26,16 @@ todo: $(todo_OBJS)
 	$(CC) -o todo $(todo_OBJS) $(todo_LDFLAGS)
 
 task.o: task.c task.h
-	$(CC) $(todo_CFLAGS) -c task.c
+	$(CC) $(todo_CFLAGS) -fPIC -c task.c
 
 taskedit.o: taskedit.c
-	$(CC) $(todo_CFLAGS) -c taskedit.c
+	$(CC) $(todo_CFLAGS) -fPIC -c taskedit.c
 
-todo.o: todo.c callbacks.h task.h todo.h ../config.h
-	$(CC) $(todo_CFLAGS) -c todo.c
+todo.o: todo.c task.h todo.h ../config.h
+	$(CC) $(todo_CFLAGS) -fPIC -c todo.c
 
-callbacks.o: callbacks.c task.h todo.h callbacks.h
-	$(CC) $(todo_CFLAGS) -c callbacks.c
+window.o: window.c todo.h window.h
+	$(CC) $(todo_CFLAGS) -c window.c
 
 main.o: main.c task.h todo.h ../config.h
 	$(CC) $(todo_CFLAGS) -c main.c

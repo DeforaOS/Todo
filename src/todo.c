@@ -30,10 +30,8 @@ static char const _license[] =
 #include <errno.h>
 #include <libintl.h>
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
 #include <System.h>
 #include <Desktop.h>
-#include "callbacks.h"
 #include "taskedit.h"
 #include "todo.h"
 #include "../config.h"
@@ -47,6 +45,7 @@ static char const _license[] =
 struct _Todo
 {
 	GtkWidget * window;
+	GtkWidget * widget;
 	GtkWidget * scrolled;
 	GtkListStore * store;
 	GtkListStore * priorities;
@@ -54,9 +53,45 @@ struct _Todo
 	GtkTreeModel * filter_sort;
 	TodoView filter_view;
 	GtkWidget * view;
-	GtkWidget * statusbar;
 	GtkWidget * about;
 };
+
+
+/* prototypes */
+static int _todo_confirm(GtkWidget * window, char const * message);
+static gboolean _todo_get_iter(Todo * todo, GtkTreeIter * iter,
+		GtkTreePath * path);
+static char * _todo_task_get_directory(void);
+static char * _todo_task_get_filename(char const * filename);
+static char * _todo_task_get_new_filename(void);
+static void _todo_task_save(Todo * todo, GtkTreeIter * iter);
+
+/* callbacks */
+/* toolbar */
+static void _todo_on_new(gpointer data);
+static void _todo_on_edit(gpointer data);
+static void _todo_on_select_all(gpointer data);
+static void _todo_on_delete(gpointer data);
+#ifdef EMBEDDED
+static void _todo_on_preferences(gpointer data);
+#endif
+static void _todo_on_view_as(gpointer data);
+
+/* view */
+static void _todo_on_task_activated(gpointer data);
+static void _todo_on_task_cursor_changed(gpointer data);
+static void _todo_on_task_done_toggled(GtkCellRendererToggle * renderer,
+		gchar * path, gpointer data);
+static void _todo_on_task_priority_edited(GtkCellRendererText * renderer,
+		gchar * path, gchar * priority, gpointer data);
+static void _todo_on_task_title_edited(GtkCellRendererText * renderer,
+		gchar * path, gchar * title, gpointer data);
+static void _todo_on_view_all_tasks(gpointer data);
+static void _todo_on_view_completed_tasks(gpointer data);
+static void _todo_on_view_remaining_tasks(gpointer data);
+
+static gboolean _todo_on_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
+		gpointer data);
 
 
 /* constants */
@@ -75,9 +110,9 @@ static const struct
 } _todo_columns[] =
 {
 	{ TD_COL_DONE, N_("Done"), TD_COL_DONE, G_CALLBACK(
-			on_task_done_toggled) },
+			_todo_on_task_done_toggled) },
 	{ TD_COL_TITLE, N_("Title"), TD_COL_TITLE, G_CALLBACK(
-			on_task_title_edited) },
+			_todo_on_task_title_edited) },
 	{ TD_COL_DISPLAY_START, N_("Beginning"), TD_COL_START, NULL },
 	{ TD_COL_DISPLAY_END, N_("Completion"), TD_COL_END, NULL },
 	{ 0, NULL, 0, NULL }
@@ -104,113 +139,30 @@ static char const * _authors[] =
 	NULL
 };
 
-/* accelerators */
-static const DesktopAccel _todo_accel[] =
-{
-#ifdef EMBEDDED
-	{ G_CALLBACK(on_close), GDK_CONTROL_MASK, GDK_KEY_W },
-	{ G_CALLBACK(on_edit), GDK_CONTROL_MASK, GDK_KEY_E },
-	{ G_CALLBACK(on_new), GDK_CONTROL_MASK, GDK_KEY_N },
-	{ G_CALLBACK(on_preferences), GDK_CONTROL_MASK, GDK_KEY_P },
-#endif
-	{ NULL, 0, 0 }
-};
-
-#ifndef EMBEDDED
-/* menubar */
-static const DesktopMenu _file_menu[] =
-{
-	{ N_("_New"), G_CALLBACK(on_file_new), GTK_STOCK_NEW, GDK_CONTROL_MASK,
-		GDK_KEY_N },
-	{ N_("_Edit"), G_CALLBACK(on_file_edit), GTK_STOCK_EDIT,
-		GDK_CONTROL_MASK, GDK_KEY_E },
-	{ "", NULL, NULL, 0, 0 },
-	{ N_("_Close"), G_CALLBACK(on_file_close), GTK_STOCK_CLOSE,
-		GDK_CONTROL_MASK, GDK_KEY_W },
-	{ NULL, NULL, NULL, 0, 0 }
-};
-static const DesktopMenu _edit_menu[] =
-{
-	{ N_("Select _all"), G_CALLBACK(on_edit_select_all),
-#if GTK_CHECK_VERSION(2, 10, 0)
-		GTK_STOCK_SELECT_ALL,
-#else
-		"edit-select-all",
-#endif
-		GDK_CONTROL_MASK, GDK_KEY_A },
-	{ "", NULL, NULL, 0, 0 },
-	{ N_("_Delete"), G_CALLBACK(on_edit_delete), GTK_STOCK_DELETE, 0, 0 },
-	{ "", NULL, NULL, 0, 0 },
-	{ N_("_Preferences"), G_CALLBACK(on_edit_preferences),
-		GTK_STOCK_PREFERENCES, GDK_CONTROL_MASK, GDK_KEY_P },
-	{ NULL, NULL, NULL, 0, 0 }
-};
-static const DesktopMenu _view_menu[] =
-{
-	{ N_("_All tasks"), G_CALLBACK(on_view_all_tasks), NULL, 0, 0 },
-	{ N_("_Completed tasks"), G_CALLBACK(on_view_completed_tasks), NULL, 0,
-		0 },
-	{ N_("_Remaining tasks"), G_CALLBACK(on_view_remaining_tasks), NULL, 0,
-		0 },
-	{ NULL, NULL, NULL, 0, 0 }
-};
-static const DesktopMenu _help_menu[] =
-{
-	{ N_("_About"), G_CALLBACK(on_help_about),
-#if GTK_CHECK_VERSION(2, 6, 0)
-		GTK_STOCK_ABOUT, 0, 0 },
-#else
-		NULL, 0, 0 },
-#endif
-	{ NULL, NULL, NULL, 0, 0 }
-};
-static const DesktopMenubar _menubar[] =
-{
-	{ N_("_File"), _file_menu },
-	{ N_("_Edit"), _edit_menu },
-	{ N_("_View"), _view_menu },
-	{ N_("_Help"), _help_menu },
-	{ NULL, NULL },
-};
-#endif
-
 /* toolbar */
 static DesktopToolbar _toolbar[] =
 {
-	{ N_("New task"), G_CALLBACK(on_new), GTK_STOCK_NEW, 0, 0, NULL },
-	{ N_("Edit task"), G_CALLBACK(on_edit), GTK_STOCK_EDIT, 0, 0, NULL },
+	{ N_("New task"), G_CALLBACK(_todo_on_new), GTK_STOCK_NEW, 0, 0, NULL },
+	{ N_("Edit task"), G_CALLBACK(_todo_on_edit), GTK_STOCK_EDIT, 0, 0,
+		NULL },
 	{ "", NULL, NULL, 0, 0, NULL },
 #if GTK_CHECK_VERSION(2, 10, 0)
-	{ N_("Select all"), G_CALLBACK(on_select_all), GTK_STOCK_SELECT_ALL, 0,
-		0, NULL },
+	{ N_("Select all"), G_CALLBACK(_todo_on_select_all),
+		GTK_STOCK_SELECT_ALL, 0, 0, NULL },
 #else
-	{ N_("Select all"), G_CALLBACK(on_select_all), "edit-select-all", 0, 0,
-		NULL },
+	{ N_("Select all"), G_CALLBACK(_todo_on_select_all), "edit-select-all",
+		0, 0, NULL },
 #endif
-	{ N_("Delete task"), G_CALLBACK(on_delete), GTK_STOCK_DELETE, 0, 0,
-		NULL },
+	{ N_("Delete task"), G_CALLBACK(_todo_on_delete), GTK_STOCK_DELETE, 0,
+		0, NULL },
 #ifdef EMBEDDED
 	{ "", NULL, NULL, 0, 0, NULL },
-	{ N_("Preferences"), G_CALLBACK(on_preferences), GTK_STOCK_PREFERENCES,
-		0, 0, NULL },
+	{ N_("Preferences"), G_CALLBACK(_todo_on_preferences),
+		GTK_STOCK_PREFERENCES, 0, 0, NULL },
 #endif
 	{ "", NULL, NULL, 0, 0, NULL },
 	{ NULL, NULL, NULL, 0, 0, NULL }
 };
-
-
-/* prototypes */
-static int _todo_confirm(GtkWidget * window, char const * message);
-static gboolean _todo_get_iter(Todo * todo, GtkTreeIter * iter,
-		GtkTreePath * path);
-static char * _todo_task_get_directory(void);
-static char * _todo_task_get_filename(char const * filename);
-static char * _todo_task_get_new_filename(void);
-static void _todo_task_save(Todo * todo, GtkTreeIter * iter);
-
-/* callbacks */
-static gboolean _on_todo_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
-		gpointer data);
 
 
 /* public */
@@ -219,10 +171,9 @@ static gboolean _on_todo_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
 static void _new_view(Todo * todo);
 static gboolean _new_idle(gpointer data);
 
-Todo * todo_new(void)
+Todo * todo_new(GtkWidget * window, GtkAccelGroup * group)
 {
 	Todo * todo;
-	GtkAccelGroup * group;
 	GtkWidget * vbox;
 	GtkWidget * widget;
 	GtkToolItem * toolitem;
@@ -232,38 +183,26 @@ Todo * todo_new(void)
 	if((todo = object_new(sizeof(*todo))) == NULL)
 		return NULL;
 	/* main window */
-	group = gtk_accel_group_new();
-	todo->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_add_accel_group(GTK_WINDOW(todo->window), group);
-	gtk_window_set_default_size(GTK_WINDOW(todo->window), 640, 480);
-	gtk_window_set_icon_name(GTK_WINDOW(todo->window), "todo");
-	gtk_window_set_title(GTK_WINDOW(todo->window), _("Todo"));
-	g_signal_connect_swapped(G_OBJECT(todo->window), "delete-event",
-			G_CALLBACK(on_closex), NULL);
+	todo->window = window;
 	vbox = gtk_vbox_new(FALSE, 0);
-	desktop_accel_create(_todo_accel, todo, group);
-#ifndef EMBEDDED
-	/* menubar */
-	widget = desktop_menubar_create(_menubar, todo, group);
-	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, TRUE, 0);
-#endif
+	todo->widget = vbox;
 	/* toolbar */
 	widget = desktop_toolbar_create(_toolbar, todo, group);
 	toolitem = gtk_menu_tool_button_new(NULL, _("View as..."));
 	g_signal_connect_swapped(G_OBJECT(toolitem), "clicked", G_CALLBACK(
-				on_view_as), todo);
+				_todo_on_view_as), todo);
 	menu = gtk_menu_new();
 	menuitem = gtk_menu_item_new_with_label(_("All tasks"));
 	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
-				on_view_all_tasks), todo);
+				_todo_on_view_all_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Completed tasks"));
 	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
-				on_view_completed_tasks), todo);
+				_todo_on_view_completed_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Remaining tasks"));
 	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
-				on_view_remaining_tasks), todo);
+				_todo_on_view_remaining_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
 	gtk_menu_tool_button_set_menu(GTK_MENU_TOOL_BUTTON(toolitem), menu);
@@ -275,12 +214,7 @@ Todo * todo_new(void)
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	_new_view(todo);
 	gtk_box_pack_start(GTK_BOX(vbox), todo->scrolled, TRUE, TRUE, 0);
-	/* statusbar */
-	todo->statusbar = gtk_statusbar_new();
-	gtk_box_pack_start(GTK_BOX(vbox), todo->statusbar, FALSE, TRUE, 0);
 	todo->about = NULL;
-	gtk_container_add(GTK_CONTAINER(todo->window), vbox);
-	gtk_widget_show_all(todo->window);
 	g_idle_add(_new_idle, todo);
 	return todo;
 }
@@ -316,7 +250,7 @@ static void _new_view(Todo * todo)
 			NULL);
 	todo->filter_view = TODO_VIEW_ALL_TASKS;
 	gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(
-				todo->filter), _on_todo_filter_view, todo,
+				todo->filter), _todo_on_filter_view, todo,
 			NULL);
 	todo->filter_sort = gtk_tree_model_sort_new_with_model(todo->filter);
 	todo->view = gtk_tree_view_new_with_model(GTK_TREE_MODEL(
@@ -326,9 +260,9 @@ static void _new_view(Todo * todo)
 			!= NULL)
 		gtk_tree_selection_set_mode(sel, GTK_SELECTION_MULTIPLE);
 	g_signal_connect_swapped(G_OBJECT(todo->view), "cursor-changed",
-			G_CALLBACK(on_task_cursor_changed), todo);
+			G_CALLBACK(_todo_on_task_cursor_changed), todo);
 	g_signal_connect_swapped(G_OBJECT(todo->view), "row-activated",
-			G_CALLBACK(on_task_activated), todo);
+			G_CALLBACK(_todo_on_task_activated), todo);
 	/* done column */
 	renderer = gtk_cell_renderer_toggle_new();
 	g_signal_connect(G_OBJECT(renderer), "toggled", G_CALLBACK(
@@ -370,7 +304,7 @@ static void _new_view(Todo * todo)
 			"model", todo->priorities, "text-column", 1,
 			"editable", TRUE, NULL);
 	g_signal_connect(renderer, "edited", G_CALLBACK(
-				on_task_priority_edited), todo);
+				_todo_on_task_priority_edited), todo);
 	column = gtk_tree_view_column_new_with_attributes(_("Priority"),
 			renderer, "text", TD_COL_DISPLAY_PRIORITY, NULL);
 #if GTK_CHECK_VERSION(2, 4, 0)
@@ -406,6 +340,13 @@ void todo_delete(Todo * todo)
 TodoView todo_get_view(Todo * todo)
 {
 	return todo->filter_view;
+}
+
+
+/* todo_get_widget */
+GtkWidget * todo_get_widget(Todo * todo)
+{
+	return todo->widget;
 }
 
 
@@ -486,6 +427,13 @@ static int _error_text(char const * message, int ret)
 	fputs(message, stderr);
 	fputc('\n', stderr);
 	return ret;
+}
+
+
+/* todo_show_preferences */
+void todo_show_preferences(Todo * todo, gboolean show)
+{
+	/* FIXME implement */
 }
 
 
@@ -1154,8 +1102,153 @@ static void _todo_task_save(Todo * todo, GtkTreeIter * iter)
 
 
 /* callbacks */
-/* on_todo_filter_view */
-static gboolean _on_todo_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
+/* todo_on_view_all_tasks */
+static void _todo_on_view_all_tasks(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_set_view(todo, TODO_VIEW_ALL_TASKS);
+}
+
+
+/* todo_on_view_completed_tasks */
+static void _todo_on_view_completed_tasks(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_set_view(todo, TODO_VIEW_COMPLETED_TASKS);
+}
+
+
+/* todo_on_view_remaining_tasks */
+static void _todo_on_view_remaining_tasks(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_set_view(todo, TODO_VIEW_REMAINING_TASKS);
+}
+
+
+/* toolbar */
+/* todo_on_delete */
+static void _todo_on_delete(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_delete_selected(todo);
+}
+
+
+/* todo_on_edit */
+static void _todo_on_edit(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_edit(todo);
+}
+
+
+/* todo_on_new */
+static void _todo_on_new(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_add(todo, NULL);
+}
+
+
+#ifdef EMBEDDED
+/* todo_on_preferences */
+static void _todo_on_preferences(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_show_preferences(todo, TRUE);
+}
+#endif
+
+
+/* todo_on_view_as */
+static void _todo_on_view_as(gpointer data)
+{
+	Todo * todo = data;
+	TodoView view;
+
+	view = todo_get_view(todo);
+	view = (view + 1) % TODO_VIEW_COUNT;
+	todo_set_view(todo, view);
+}
+
+
+/* todo_on_select_all */
+static void _todo_on_select_all(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_select_all(todo);
+}
+
+
+/* view */
+/* todo_on_task_activated */
+static void _todo_on_task_activated(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_edit(todo);
+}
+
+
+/* todo_on_task_cursor_changed */
+static void _todo_on_task_cursor_changed(gpointer data)
+{
+	Todo * todo = data;
+
+	todo_task_cursor_changed(todo);
+}
+
+
+/* todo_on_task_done_toggled */
+static void _todo_on_task_done_toggled(GtkCellRendererToggle * renderer,
+		gchar * path, gpointer data)
+{
+	Todo * todo = data;
+	GtkTreePath * treepath;
+
+	treepath = gtk_tree_path_new_from_string(path);
+	todo_task_toggle_done(todo, treepath);
+	gtk_tree_path_free(treepath);
+}
+
+
+/* todo_on_task_priority_edited */
+static void _todo_on_task_priority_edited(GtkCellRendererText * renderer,
+		gchar * path, gchar * priority, gpointer data)
+{
+	Todo * todo = data;
+	GtkTreePath * treepath;
+
+	treepath = gtk_tree_path_new_from_string(path);
+	todo_task_set_priority(todo, treepath, priority);
+	gtk_tree_path_free(treepath);
+}
+
+
+/* todo_on_task_title_edited */
+static void _todo_on_task_title_edited(GtkCellRendererText * renderer,
+		gchar * path, gchar * title, gpointer data)
+{
+	Todo * todo = data;
+	GtkTreePath * treepath;
+
+	treepath = gtk_tree_path_new_from_string(path);
+	todo_task_set_title(todo, treepath, title);
+	gtk_tree_path_free(treepath);
+}
+
+
+/* todo_on_filter_view */
+static gboolean _todo_on_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
 		gpointer data)
 {
 	Todo * todo = data;

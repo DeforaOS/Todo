@@ -1,6 +1,6 @@
 PACKAGE	= Todo
 VERSION	= 0.1.2
-SUBDIRS	= data po src
+SUBDIRS	= data po src tools
 RM	?= rm -f
 LN	?= ln -f
 TAR	?= tar -czvf
@@ -41,14 +41,17 @@ dist:
 		$(PACKAGE)-$(VERSION)/src/task.c \
 		$(PACKAGE)-$(VERSION)/src/taskedit.c \
 		$(PACKAGE)-$(VERSION)/src/todo.c \
-		$(PACKAGE)-$(VERSION)/src/callbacks.c \
+		$(PACKAGE)-$(VERSION)/src/window.c \
 		$(PACKAGE)-$(VERSION)/src/main.c \
 		$(PACKAGE)-$(VERSION)/src/Makefile \
 		$(PACKAGE)-$(VERSION)/src/task.h \
 		$(PACKAGE)-$(VERSION)/src/taskedit.h \
 		$(PACKAGE)-$(VERSION)/src/todo.h \
-		$(PACKAGE)-$(VERSION)/src/callbacks.h \
+		$(PACKAGE)-$(VERSION)/src/window.h \
 		$(PACKAGE)-$(VERSION)/src/project.conf \
+		$(PACKAGE)-$(VERSION)/tools/todo.c \
+		$(PACKAGE)-$(VERSION)/tools/Makefile \
+		$(PACKAGE)-$(VERSION)/tools/project.conf \
 		$(PACKAGE)-$(VERSION)/Makefile \
 		$(PACKAGE)-$(VERSION)/COPYING \
 		$(PACKAGE)-$(VERSION)/config.h \
