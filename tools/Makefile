@@ -21,7 +21,7 @@ all: $(TARGETS)
 
 todo_OBJS = todo.o
 todo_CFLAGS = $(CPPFLAGSF) $(CPPFLAGS) $(CFLAGSF) $(CFLAGS)
-todo_LDFLAGS = $(LDFLAGSF) $(LDFLAGS) ../src/task.o ../src/taskedit.o ../src/todo.o ../src/callbacks.o
+todo_LDFLAGS = $(LDFLAGSF) $(LDFLAGS) ../src/task.o ../src/taskedit.o ../src/todo.o
 
 todo.so: $(todo_OBJS)
 	$(CCSHARED) -o todo.so $(todo_OBJS) $(todo_LDFLAGS)
