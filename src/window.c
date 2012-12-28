@@ -44,7 +44,11 @@ struct _TodoWindow
 /* callbacks */
 static void _todowindow_on_close(gpointer data);
 static gboolean _todowindow_on_closex(gpointer data);
+static void _todowindow_on_edit(gpointer data);
+static void _todowindow_on_new(gpointer data);
+static void _todowindow_on_preferences(gpointer data);
 
+#ifndef EMBEDDED
 /* menus */
 /* file menu */
 static void _todowindow_on_file_new(gpointer data);
@@ -63,6 +67,7 @@ static void _todowindow_on_view_remaining_tasks(gpointer data);
 
 /* help menu */
 static void _todowindow_on_help_about(gpointer data);
+#endif
 
 /* constants */
 /* accelerators */
@@ -219,6 +224,34 @@ static gboolean _todowindow_on_closex(gpointer data)
 }
 
 
+/* todowindow_on_edit */
+static void _todowindow_on_edit(gpointer data)
+{
+	TodoWindow * todo = data;
+
+	todo_task_edit(todo->todo);
+}
+
+
+/* todowindow_on_new */
+static void _todowindow_on_new(gpointer data)
+{
+	TodoWindow * todo = data;
+
+	todo_task_add(todo->todo, NULL);
+}
+
+
+/* todowindow_on_preferences */
+static void _todowindow_on_preferences(gpointer data)
+{
+	TodoWindow * todo = data;
+
+	todo_show_preferences(todo->todo, TRUE);
+}
+
+
+#ifndef EMBEDDED
 /* file menu */
 /* todowindow_on_file_close */
 static void _todowindow_on_file_close(gpointer data)
@@ -234,7 +267,7 @@ static void _todowindow_on_file_edit(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_task_edit(todo->todo);
+	_todowindow_on_edit(todo);
 }
 
 
@@ -243,7 +276,7 @@ static void _todowindow_on_file_new(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_task_add(todo->todo, NULL);
+	_todowindow_on_new(todo);
 }
 
 
@@ -262,7 +295,7 @@ static void _todowindow_on_edit_preferences(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_show_preferences(todo->todo, TRUE);
+	_todowindow_on_preferences(todo);
 }
 
 
@@ -311,3 +344,4 @@ static void _todowindow_on_help_about(gpointer data)
 
 	todo_about(todo->todo);
 }
+#endif
