@@ -1,6 +1,6 @@
 /* $Id$ */
 static char _copyright[] =
-"Copyright (c) 2009-2012 Pierre Pronchery <khorben@defora.org>";
+"Copyright (c) 2009-2013 Pierre Pronchery <khorben@defora.org>";
 /* This file is part of DeforaOS Desktop Todo */
 static char const _license[] =
 "This program is free software: you can redistribute it and/or modify\n"
@@ -42,6 +42,12 @@ static char const _license[] =
 /* Todo */
 /* private */
 /* types */
+typedef enum _TodoColumn { TD_COL_TASK, TD_COL_DONE, TD_COL_TITLE, TD_COL_START,
+	TD_COL_DISPLAY_START, TD_COL_END, TD_COL_DISPLAY_END, TD_COL_PRIORITY,
+	TD_COL_DISPLAY_PRIORITY, TD_COL_CATEGORY } TodoColumn;
+#define TD_COL_LAST TD_COL_CATEGORY
+#define TD_COL_COUNT (TD_COL_LAST + 1)
+
 struct _Todo
 {
 	GtkWidget * window;
@@ -53,6 +59,7 @@ struct _Todo
 	GtkTreeModel * filter_sort;
 	TodoView filter_view;
 	GtkWidget * view;
+	GtkTreeViewColumn * columns[TD_COL_COUNT];
 	GtkWidget * about;
 };
 
@@ -95,12 +102,6 @@ static gboolean _todo_on_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
 
 
 /* constants */
-enum { TD_COL_TASK, TD_COL_DONE, TD_COL_TITLE, TD_COL_START,
-	TD_COL_DISPLAY_START, TD_COL_END, TD_COL_DISPLAY_END, TD_COL_PRIORITY,
-	TD_COL_DISPLAY_PRIORITY, TD_COL_CATEGORY };
-#define TD_COL_LAST TD_COL_CATEGORY
-#define TD_COL_COUNT (TD_COL_LAST + 1)
-
 static const struct
 {
 	int col;
@@ -263,6 +264,8 @@ static void _new_view(Todo * todo)
 			G_CALLBACK(_todo_on_task_cursor_changed), todo);
 	g_signal_connect_swapped(G_OBJECT(todo->view), "row-activated",
 			G_CALLBACK(_todo_on_task_activated), todo);
+	/* columns */
+	memset(&todo->columns, 0, sizeof(todo->columns));
 	/* done column */
 	renderer = gtk_cell_renderer_toggle_new();
 	g_signal_connect(G_OBJECT(renderer), "toggled", G_CALLBACK(
@@ -270,6 +273,7 @@ static void _new_view(Todo * todo)
 	column = gtk_tree_view_column_new_with_attributes(
 			_(_todo_columns[0].title), renderer, "active",
 			_todo_columns[0].col, NULL);
+	todo->columns[TD_COL_DONE] = column;
 	gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN(column),
 			GTK_TREE_VIEW_COLUMN_FIXED);
 	gtk_tree_view_column_set_fixed_width(GTK_TREE_VIEW_COLUMN(column), 50);
@@ -290,6 +294,7 @@ static void _new_view(Todo * todo)
 		column = gtk_tree_view_column_new_with_attributes(
 				_(_todo_columns[i].title), renderer, "text",
 				_todo_columns[i].col, NULL);
+		todo->columns[_todo_columns[i].col] = column;
 #if GTK_CHECK_VERSION(2, 4, 0)
 		gtk_tree_view_column_set_expand(column, TRUE);
 #endif
@@ -307,6 +312,7 @@ static void _new_view(Todo * todo)
 				_todo_on_task_priority_edited), todo);
 	column = gtk_tree_view_column_new_with_attributes(_("Priority"),
 			renderer, "text", TD_COL_DISPLAY_PRIORITY, NULL);
+	todo->columns[TD_COL_DISPLAY_PRIORITY] = column;
 #if GTK_CHECK_VERSION(2, 4, 0)
 	gtk_tree_view_column_set_expand(column, TRUE);
 #endif

@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,10 @@
 
 
 
+#define EMBEDDED
 #include <stdlib.h>
 #include <Desktop/Mailer/plugin.h>
-#include "../src/todo.h"
+#include "../src/todo.c"
 
 
 /* Mailing-lists */
@@ -68,6 +69,7 @@ static MailerPlugin * _todo_init(MailerPluginHelper * helper)
 {
 	TodoPlugin * todo;
 	GtkWidget * widget;
+	size_t i;
 
 	if((todo = malloc(sizeof(*todo))) == NULL)
 		return NULL;
@@ -80,12 +82,12 @@ static MailerPlugin * _todo_init(MailerPluginHelper * helper)
 	todo->widget = gtk_vbox_new(FALSE, 4);
 	widget = todo_get_widget(todo->todo);
 	gtk_box_pack_start(GTK_BOX(todo->widget), widget, TRUE, TRUE, 0);
-	widget = gtk_scrolled_window_new(NULL, NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(widget),
-			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	todo->view = gtk_tree_view_new();
-	gtk_container_add(GTK_CONTAINER(widget), todo->view);
-	gtk_box_pack_start(GTK_BOX(todo->widget), widget, TRUE, TRUE, 0);
+	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(todo->todo->view),
+			FALSE);
+	for(i = 0; i < TD_COL_COUNT; i++)
+		if(todo->todo->columns[i] != NULL && i != TD_COL_TITLE)
+			gtk_tree_view_column_set_visible(todo->todo->columns[i],
+					FALSE);
 	gtk_widget_show_all(todo->widget);
 	return todo;
 }
