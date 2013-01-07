@@ -17,6 +17,7 @@ fr.mo: Todo.pot fr.po
 
 clean:
 	$(RM) -- $(Todo.pot_OBJS) $(fr.mo_OBJS)
+	./gettext.sh -c -P "$(PREFIX)" -- "fr.mo"
 
 distclean: clean
 	$(RM) -- $(TARGETS)
