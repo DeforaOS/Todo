@@ -20,7 +20,7 @@ distclean:
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/applications
-	$(INSTALL) -m 0644 -- todo.desktop $(DESTDIR)$(PREFIX)/share/applications/todo.desktop
+	$(INSTALL) -m 0644 todo.desktop $(DESTDIR)$(PREFIX)/share/applications/todo.desktop
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done

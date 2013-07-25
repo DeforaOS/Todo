@@ -37,7 +37,7 @@ distclean: clean
 
 install: $(TARGETS)
 	$(MKDIR) $(DESTDIR)$(LIBDIR)/Mailer/plugins
-	$(INSTALL) -m 0644 -- todo.so $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
+	$(INSTALL) -m 0644 todo.so $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
