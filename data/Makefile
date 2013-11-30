@@ -20,10 +20,10 @@ distclean:
 install:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) install) || exit; done
 	$(MKDIR) $(DESTDIR)$(PREFIX)/share/applications
-	$(INSTALL) -m 0644 todo.desktop $(DESTDIR)$(PREFIX)/share/applications/todo.desktop
+	$(INSTALL) -m 0644 deforaos-todo.desktop $(DESTDIR)$(PREFIX)/share/applications/deforaos-todo.desktop
 
 uninstall:
 	@for i in $(SUBDIRS); do (cd "$$i" && $(MAKE) uninstall) || exit; done
-	$(RM) -- $(DESTDIR)$(PREFIX)/share/applications/todo.desktop
+	$(RM) -- $(DESTDIR)$(PREFIX)/share/applications/deforaos-todo.desktop
 
 .PHONY: all subdirs clean distclean install uninstall
