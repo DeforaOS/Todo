@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -167,6 +167,7 @@ TodoWindow * todowindow_new(void)
 	}
 	desktop_accel_create(_todo_accel, todo, group);
 	gtk_window_add_accel_group(GTK_WINDOW(todo->window), group);
+	g_object_unref(group);
 	gtk_window_set_default_size(GTK_WINDOW(todo->window), 640, 480);
 #if GTK_CHECK_VERSION(2, 6, 0)
 	gtk_window_set_icon_name(GTK_WINDOW(todo->window), "todo");
