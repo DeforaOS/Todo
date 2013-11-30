@@ -189,7 +189,7 @@ Todo * todo_new(GtkWidget * window, GtkAccelGroup * group)
 	todo->widget = vbox;
 	/* toolbar */
 	widget = desktop_toolbar_create(_toolbar, todo, group);
-	toolitem = gtk_menu_tool_button_new(NULL, _("View as..."));
+	toolitem = gtk_menu_tool_button_new(NULL, _("View..."));
 	g_signal_connect_swapped(G_OBJECT(toolitem), "clicked", G_CALLBACK(
 				_todo_on_view_as), todo);
 	menu = gtk_menu_new();
