@@ -232,9 +232,9 @@ static void _new_view(Todo * todo)
 			G_TYPE_POINTER, /* task */
 			G_TYPE_BOOLEAN, /* done */
 			G_TYPE_STRING,	/* title */
-			G_TYPE_UINT,	/* start */
+			G_TYPE_UINT64,	/* start */
 			G_TYPE_STRING,	/* display start */
-			G_TYPE_UINT,	/* end */
+			G_TYPE_UINT64,	/* end */
 			G_TYPE_STRING,	/* display end */
 			G_TYPE_UINT,	/* priority */
 			G_TYPE_STRING,	/* display priority */
