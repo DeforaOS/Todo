@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2010 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2010-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,7 +92,11 @@ void task_delete(Task * task)
 /* task_get_description */
 char const * task_get_description(Task * task)
 {
-	return config_get(task->config, NULL, "description");
+	char const * ret;
+
+	if((ret = config_get(task->config, NULL, "description")) == NULL)
+		return "";
+	return ret;
 }
 
 
@@ -124,7 +128,11 @@ char const * task_get_filename(Task * task)
 /* task_get_priority */
 char const * task_get_priority(Task * task)
 {
-	return config_get(task->config, NULL, "priority");
+	char const * ret;
+
+	if((ret = config_get(task->config, NULL, "priority")) == NULL)
+		return "";
+	return ret;
 }
 
 
@@ -142,7 +150,11 @@ time_t task_get_start(Task * task)
 /* task_get_title */
 char const * task_get_title(Task * task)
 {
-	return config_get(task->config, NULL, "title");
+	char const * ret;
+
+	if((ret = config_get(task->config, NULL, "title")) == NULL)
+		return "";
+	return ret;
 }
 
 
