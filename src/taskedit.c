@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2011 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2010-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,8 +70,8 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 				task));
 	gtk_window_set_default_size(GTK_WINDOW(taskedit->window), 300, 400);
 	gtk_window_set_title(GTK_WINDOW(taskedit->window), buf);
-	g_signal_connect_swapped(G_OBJECT(taskedit->window), "delete-event",
-			G_CALLBACK(_on_taskedit_cancel), taskedit);
+	g_signal_connect_swapped(taskedit->window, "delete-event", G_CALLBACK(
+				_on_taskedit_cancel), taskedit);
 	group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
 	vbox = gtk_vbox_new(FALSE, 4);
 	/* title */
@@ -122,12 +122,12 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing(GTK_BOX(bbox), 4);
 	widget = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(
+	g_signal_connect_swapped(widget, "clicked", G_CALLBACK(
 				_on_taskedit_cancel), taskedit);
 	gtk_container_add(GTK_CONTAINER(bbox), widget);
 	widget = gtk_button_new_from_stock(GTK_STOCK_OK);
-	g_signal_connect_swapped(G_OBJECT(widget), "clicked", G_CALLBACK(
-				_on_taskedit_ok), taskedit);
+	g_signal_connect_swapped(widget, "clicked", G_CALLBACK(_on_taskedit_ok),
+			taskedit);
 	gtk_container_add(GTK_CONTAINER(bbox), widget);
 	gtk_box_pack_end(GTK_BOX(vbox), bbox, FALSE, TRUE, 0);
 	gtk_container_set_border_width(GTK_CONTAINER(taskedit->window), 4);

@@ -1,5 +1,5 @@
 /* $Id$ */
-/* Copyright (c) 2012-2013 Pierre Pronchery <khorben@defora.org> */
+/* Copyright (c) 2012-2014 Pierre Pronchery <khorben@defora.org> */
 /* This file is part of DeforaOS Desktop Todo */
 /* This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -173,8 +173,8 @@ TodoWindow * todowindow_new(void)
 	gtk_window_set_icon_name(GTK_WINDOW(todo->window), "todo");
 #endif
 	gtk_window_set_title(GTK_WINDOW(todo->window), _("Todo"));
-	g_signal_connect_swapped(G_OBJECT(todo->window), "delete-event",
-			G_CALLBACK(_todowindow_on_closex), todo);
+	g_signal_connect_swapped(todo->window, "delete-event", G_CALLBACK(
+				_todowindow_on_closex), todo);
 	vbox = gtk_vbox_new(FALSE, 0);
 #ifndef EMBEDDED
 	/* menubar */

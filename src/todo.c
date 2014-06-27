@@ -1,6 +1,6 @@
 /* $Id$ */
 static char _copyright[] =
-"Copyright © 2009-2013 Pierre Pronchery <khorben@defora.org>";
+"Copyright © 2009-2014 Pierre Pronchery <khorben@defora.org>";
 /* This file is part of DeforaOS Desktop Todo */
 static char const _license[] =
 "This program is free software: you can redistribute it and/or modify\n"
@@ -190,19 +190,19 @@ Todo * todo_new(GtkWidget * window, GtkAccelGroup * group)
 	/* toolbar */
 	widget = desktop_toolbar_create(_toolbar, todo, group);
 	toolitem = gtk_menu_tool_button_new(NULL, _("View..."));
-	g_signal_connect_swapped(G_OBJECT(toolitem), "clicked", G_CALLBACK(
+	g_signal_connect_swapped(toolitem, "clicked", G_CALLBACK(
 				_todo_on_view_as), todo);
 	menu = gtk_menu_new();
 	menuitem = gtk_menu_item_new_with_label(_("All tasks"));
-	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
+	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
 				_todo_on_view_all_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Completed tasks"));
-	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
+	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
 				_todo_on_view_completed_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Remaining tasks"));
-	g_signal_connect_swapped(G_OBJECT(menuitem), "activate", G_CALLBACK(
+	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
 				_todo_on_view_remaining_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
@@ -260,15 +260,15 @@ static void _new_view(Todo * todo)
 	if((sel = gtk_tree_view_get_selection(GTK_TREE_VIEW(todo->view)))
 			!= NULL)
 		gtk_tree_selection_set_mode(sel, GTK_SELECTION_MULTIPLE);
-	g_signal_connect_swapped(G_OBJECT(todo->view), "cursor-changed",
-			G_CALLBACK(_todo_on_task_cursor_changed), todo);
-	g_signal_connect_swapped(G_OBJECT(todo->view), "row-activated",
-			G_CALLBACK(_todo_on_task_activated), todo);
+	g_signal_connect_swapped(todo->view, "cursor-changed", G_CALLBACK(
+				_todo_on_task_cursor_changed), todo);
+	g_signal_connect_swapped(todo->view, "row-activated", G_CALLBACK(
+				_todo_on_task_activated), todo);
 	/* columns */
 	memset(&todo->columns, 0, sizeof(todo->columns));
 	/* done column */
 	renderer = gtk_cell_renderer_toggle_new();
-	g_signal_connect(G_OBJECT(renderer), "toggled", G_CALLBACK(
+	g_signal_connect(renderer, "toggled", G_CALLBACK(
 				_todo_columns[0].callback), todo);
 	column = gtk_tree_view_column_new_with_attributes(
 			_(_todo_columns[0].title), renderer, "active",
@@ -287,8 +287,8 @@ static void _new_view(Todo * todo)
 		{
 			g_object_set(G_OBJECT(renderer), "editable", TRUE,
 					"ellipsize", PANGO_ELLIPSIZE_END, NULL);
-			g_signal_connect(G_OBJECT(renderer), "edited",
-					G_CALLBACK(_todo_columns[i].callback),
+			g_signal_connect(renderer, "edited", G_CALLBACK(
+						_todo_columns[i].callback),
 					todo);
 		}
 		column = gtk_tree_view_column_new_with_attributes(
@@ -384,13 +384,13 @@ void todo_about(Todo * todo)
 	desktop_about_dialog_set_copyright(todo->about, _copyright);
 	desktop_about_dialog_set_logo_icon_name(todo->about, "todo");
 	desktop_about_dialog_set_license(todo->about, _license);
-	desktop_about_dialog_set_name(todo->about, PACKAGE);
+	desktop_about_dialog_set_program_name(todo->about, PACKAGE);
 	desktop_about_dialog_set_translator_credits(todo->about,
 			_("translator-credits"));
 	desktop_about_dialog_set_version(todo->about, VERSION);
 	desktop_about_dialog_set_website(todo->about, "http://www.defora.org/");
-	g_signal_connect_swapped(G_OBJECT(todo->about), "delete-event",
-			G_CALLBACK(_about_on_closex), todo);
+	g_signal_connect_swapped(todo->about, "delete-event", G_CALLBACK(
+				_about_on_closex), todo);
 	gtk_widget_show(todo->about);
 }
 
@@ -616,7 +616,7 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 		button = gtk_spin_button_new_with_range(0.0, 23.0, 1.0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), t.tm_hour);
-		g_signal_connect(G_OBJECT(button), "value-changed", G_CALLBACK(
+		g_signal_connect(button, "value-changed", G_CALLBACK(
 					(id == TD_COL_START)
 					? _task_cursor_changed_hour_start
 					: _task_cursor_changed_hour_end), task);
@@ -625,7 +625,7 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 		button = gtk_spin_button_new_with_range(0.0, 59.0, 1.0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), t.tm_min);
-		g_signal_connect(G_OBJECT(button), "value-changed", G_CALLBACK(
+		g_signal_connect(button, "value-changed", G_CALLBACK(
 					(id == TD_COL_START)
 					? _task_cursor_changed_min_start
 					: _task_cursor_changed_min_end), task);
@@ -634,7 +634,7 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
 		button = gtk_spin_button_new_with_range(0.0, 59.0, 1.0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(button), t.tm_sec);
-		g_signal_connect(G_OBJECT(button), "value-changed", G_CALLBACK(
+		g_signal_connect(button, "value-changed", G_CALLBACK(
 					(id == TD_COL_START)
 					? _task_cursor_changed_sec_start
 					: _task_cursor_changed_sec_end), task);
@@ -645,8 +645,8 @@ void todo_task_cursor_changed(Todo * todo)
 				GTK_ICON_SIZE_MENU);
 		gtk_button_set_image(GTK_BUTTON(button), image);
 		gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
-		g_signal_connect_swapped(G_OBJECT(button), "clicked",
-				G_CALLBACK(gtk_widget_destroy), popup);
+		g_signal_connect_swapped(button, "clicked", G_CALLBACK(
+					gtk_widget_destroy), popup);
 		gtk_box_pack_end(GTK_BOX(hbox), button, FALSE, TRUE, 0);
 		gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 		/* date */
@@ -654,9 +654,8 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_calendar_select_day(GTK_CALENDAR(calendar), t.tm_mday);
 		gtk_calendar_select_month(GTK_CALENDAR(calendar), t.tm_mon,
 				1900 + t.tm_year);
-		g_signal_connect(G_OBJECT(calendar),
-				"day-selected-double-click", G_CALLBACK(
-					(id == TD_COL_START)
+		g_signal_connect(calendar, "day-selected-double-click",
+				G_CALLBACK((id == TD_COL_START)
 					? _task_cursor_changed_date_start
 					: _task_cursor_changed_date_end), task);
 		gtk_box_pack_start(GTK_BOX(vbox), calendar, FALSE, TRUE, 0);
