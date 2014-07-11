@@ -97,7 +97,7 @@ static const DesktopMenu _file_menu[] =
 };
 static const DesktopMenu _edit_menu[] =
 {
-	{ N_("Select _all"), G_CALLBACK(_todowindow_on_edit_select_all),
+	{ N_("Select _All"), G_CALLBACK(_todowindow_on_edit_select_all),
 #if GTK_CHECK_VERSION(2, 10, 0)
 		GTK_STOCK_SELECT_ALL,
 #else
