@@ -1,4 +1,5 @@
-TARGETS	= todo
+TARGETS	= $(OBJDIR)todo
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 BINDIR	= $(PREFIX)/bin
@@ -18,27 +19,27 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-todo_OBJS = task.o taskedit.o todo.o window.o main.o
+todo_OBJS = $(OBJDIR)task.o $(OBJDIR)taskedit.o $(OBJDIR)todo.o $(OBJDIR)window.o $(OBJDIR)main.o
 todo_CFLAGS = $(CPPFLAGSF) $(CPPFLAGS) $(CFLAGSF) $(CFLAGS)
 todo_LDFLAGS = $(LDFLAGSF) $(LDFLAGS)
 
-todo: $(todo_OBJS)
-	$(CC) -o todo $(todo_OBJS) $(todo_LDFLAGS)
+$(OBJDIR)todo: $(todo_OBJS)
+	$(CC) -o $(OBJDIR)todo $(todo_OBJS) $(todo_LDFLAGS)
 
-task.o: task.c task.h
-	$(CC) $(todo_CFLAGS) -fPIC -c task.c
+$(OBJDIR)task.o: task.c task.h
+	$(CC) $(todo_CFLAGS) -fPIC -o $(OBJDIR)task.o -c task.c
 
-taskedit.o: taskedit.c
-	$(CC) $(todo_CFLAGS) -fPIC -c taskedit.c
+$(OBJDIR)taskedit.o: taskedit.c
+	$(CC) $(todo_CFLAGS) -fPIC -o $(OBJDIR)taskedit.o -c taskedit.c
 
-todo.o: todo.c task.h todo.h ../config.h
-	$(CC) $(todo_CFLAGS) -fPIC -c todo.c
+$(OBJDIR)todo.o: todo.c task.h todo.h ../config.h
+	$(CC) $(todo_CFLAGS) -fPIC -o $(OBJDIR)todo.o -c todo.c
 
-window.o: window.c todo.h window.h
-	$(CC) $(todo_CFLAGS) -c window.c
+$(OBJDIR)window.o: window.c todo.h window.h
+	$(CC) $(todo_CFLAGS) -o $(OBJDIR)window.o -c window.c
 
-main.o: main.c task.h todo.h ../config.h
-	$(CC) $(todo_CFLAGS) -c main.c
+$(OBJDIR)main.o: main.c task.h todo.h ../config.h
+	$(CC) $(todo_CFLAGS) -o $(OBJDIR)main.o -c main.c
 
 clean:
 	$(RM) -- $(todo_OBJS)
@@ -48,7 +49,7 @@ distclean: clean
 
 install: $(TARGETS)
 	$(MKDIR) $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 0755 todo $(DESTDIR)$(BINDIR)/todo
+	$(INSTALL) -m 0755 $(OBJDIR)todo $(DESTDIR)$(BINDIR)/todo
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(BINDIR)/todo

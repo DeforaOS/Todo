@@ -1,4 +1,5 @@
-TARGETS	= todo.so
+TARGETS	= $(OBJDIR)todo.so
+OBJDIR	=
 PREFIX	= /usr/local
 DESTDIR	=
 LIBDIR	= $(PREFIX)/lib
@@ -19,15 +20,15 @@ INSTALL	= install
 
 all: $(TARGETS)
 
-todo_OBJS = todo.o
+todo_OBJS = $(OBJDIR)todo.o
 todo_CFLAGS = $(CPPFLAGSF) $(CPPFLAGS) $(CFLAGSF) $(CFLAGS)
 todo_LDFLAGS = $(LDFLAGSF) $(LDFLAGS) ../src/task.o ../src/taskedit.o
 
-todo.so: $(todo_OBJS)
-	$(CCSHARED) -o todo.so $(todo_OBJS) $(todo_LDFLAGS)
+$(OBJDIR)todo.so: $(todo_OBJS)
+	$(CCSHARED) -o $(OBJDIR)todo.so $(todo_OBJS) $(todo_LDFLAGS)
 
-todo.o: todo.c ../src/todo.c
-	$(CC) $(todo_CFLAGS) -c todo.c
+$(OBJDIR)todo.o: todo.c ../src/todo.c
+	$(CC) $(todo_CFLAGS) -o $(OBJDIR)todo.o -c todo.c
 
 clean:
 	$(RM) -- $(todo_OBJS)
@@ -37,7 +38,7 @@ distclean: clean
 
 install: $(TARGETS)
 	$(MKDIR) $(DESTDIR)$(LIBDIR)/Mailer/plugins
-	$(INSTALL) -m 0644 todo.so $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
+	$(INSTALL) -m 0644 $(OBJDIR)todo.so $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
 
 uninstall:
 	$(RM) -- $(DESTDIR)$(LIBDIR)/Mailer/plugins/todo.so
