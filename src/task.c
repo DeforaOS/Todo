@@ -47,7 +47,7 @@ Task * task_new(void)
 {
 	Task * task;
 
-	if((task = malloc(sizeof(*task))) == NULL)
+	if((task = object_new(sizeof(*task))) == NULL)
 		return NULL;
 	task->config = config_new();
 	task->filename = NULL;
@@ -84,7 +84,7 @@ void task_delete(Task * task)
 	free(task->filename);
 	if(task->config != NULL)
 		config_delete(task->config);
-	free(task);
+	object_delete(task);
 }
 
 
