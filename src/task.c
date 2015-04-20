@@ -32,6 +32,7 @@ struct _Task
 
 	/* internal */
 	char * filename;
+	String * description;
 };
 
 
@@ -51,6 +52,7 @@ Task * task_new(void)
 		return NULL;
 	task->config = config_new();
 	task->filename = NULL;
+	task->description = NULL;
 	if(task->config == NULL)
 	{
 		task_delete(task);
@@ -81,6 +83,7 @@ Task * task_new_from_file(char const * filename)
 /* task_delete */
 void task_delete(Task * task)
 {
+	string_delete(task->description);
 	free(task->filename);
 	if(task->config != NULL)
 		config_delete(task->config);
@@ -92,11 +95,18 @@ void task_delete(Task * task)
 /* task_get_description */
 char const * task_get_description(Task * task)
 {
-	char const * ret;
+	String const * p;
+	String * q;
 
-	if((ret = config_get(task->config, NULL, "description")) == NULL)
+	if(task->description != NULL)
+		return task->description;
+	if((p = config_get(task->config, NULL, "description")) == NULL)
 		return "";
-	return ret;
+	if((q = string_new_replace(p, "\\n", "\n")) == NULL
+			|| string_replace(&q, "\\\\", "\\") != 0)
+		return NULL;
+	task->description = q;
+	return task->description;
 }
 
 
@@ -161,7 +171,20 @@ char const * task_get_title(Task * task)
 /* task_set_description */
 int task_set_description(Task * task, char const * description)
 {
-	return config_set(task->config, NULL, "description", description);
+	String * d;
+
+	if((d = string_new_replace(description, "\\", "\\\\")) == NULL)
+		return -1;
+	if(string_replace(&d, "\n", "\\n") != 0
+			|| config_set(task->config, NULL, "description", d)
+			!= 0)
+	{
+		string_delete(d);
+		return -1;
+	}
+	string_delete(task->description);
+	task->description = d;
+	return 0;
 }
 
 
