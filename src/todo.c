@@ -32,6 +32,7 @@ static char const _license[] =
 #include <gtk/gtk.h>
 #include <System.h>
 #include <Desktop.h>
+#include "priority.h"
 #include "taskedit.h"
 #include "todo.h"
 #include "../config.h"
@@ -117,20 +118,6 @@ static const struct
 	{ TD_COL_DISPLAY_START, N_("Beginning"), TD_COL_START, NULL },
 	{ TD_COL_DISPLAY_END, N_("Completion"), TD_COL_END, NULL },
 	{ 0, NULL, 0, NULL }
-};
-
-static const struct
-{
-	unsigned int priority;
-	char const * title;
-} _todo_priorities[] =
-{
-	{ TODO_PRIORITY_UNKNOWN,N_("Unknown")	},
-	{ TODO_PRIORITY_LOW,	N_("Low")	},
-	{ TODO_PRIORITY_MEDIUM,	N_("Medium")	},
-	{ TODO_PRIORITY_HIGH,	N_("High")	},
-	{ TODO_PRIORITY_URGENT,	N_("Urgent")	},
-	{ 0,			NULL		}
 };
 
 
@@ -240,12 +227,12 @@ static void _new_view(Todo * todo)
 			G_TYPE_STRING,	/* display priority */
 			G_TYPE_STRING);	/* category */
 	todo->priorities = gtk_list_store_new(2, G_TYPE_UINT, G_TYPE_STRING);
-	for(i = 0; _todo_priorities[i].title != NULL; i++)
+	for(i = 0; priorities[i].title != NULL; i++)
 	{
 		gtk_list_store_append(todo->priorities, &iter);
 		gtk_list_store_set(todo->priorities, &iter,
-				0, _todo_priorities[i].priority,
-				1, _(_todo_priorities[i].title), -1);
+				0, priorities[i].priority,
+				1, _(priorities[i].title), -1);
 	}
 	todo->filter = gtk_tree_model_filter_new(GTK_TREE_MODEL(todo->store),
 			NULL);
@@ -485,10 +472,10 @@ Task * todo_task_add(Todo * todo, Task * task)
 		strftime(completion, sizeof(completion), "%c", &t);
 	}
 	priority = task_get_priority(task);
-	for(i = 0; priority != NULL && _todo_priorities[i].title != NULL; i++)
-		if(strcmp(_(_todo_priorities[i].title), priority) == 0)
+	for(i = 0; priority != NULL && priorities[i].title != NULL; i++)
+		if(strcmp(_(priorities[i].title), priority) == 0)
 		{
-			tp = _todo_priorities[i].priority;
+			tp = priorities[i].priority;
 			break;
 		}
 	gtk_list_store_set(todo->store, &iter, TD_COL_TASK, task,
@@ -933,10 +920,10 @@ void todo_task_set_priority(Todo * todo, GtkTreePath * path,
 	_todo_get_iter(todo, &iter, path);
 	gtk_tree_model_get(model, &iter, TD_COL_TASK, &task, -1);
 	task_set_priority(task, priority);
-	for(i = 0; _todo_priorities[i].title != NULL; i++)
-		if(strcmp(_(_todo_priorities[i].title), priority) == 0)
+	for(i = 0; priorities[i].title != NULL; i++)
+		if(strcmp(_(priorities[i].title), priority) == 0)
 		{
-			tp = _todo_priorities[i].priority;
+			tp = priorities[i].priority;
 			break;
 		}
 	gtk_list_store_set(todo->store, &iter, TD_COL_PRIORITY, tp,
