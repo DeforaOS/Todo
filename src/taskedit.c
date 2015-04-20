@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <libintl.h>
 #include <gtk/gtk.h>
+#include "priority.h"
 #include "taskedit.h"
 #define _(string) gettext(string)
 
@@ -48,6 +49,7 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 {
 	TaskEdit * taskedit;
 	char buf[80];
+	size_t i;
 	GtkSizeGroup * group;
 	GtkWidget * vbox;
 	GtkWidget * hbox;
@@ -88,8 +90,15 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 #if GTK_CHECK_VERSION(3, 0, 0)
 	taskedit->priority = gtk_combo_box_text_new_with_entry();
+	for(i = 0; priorities[i].title != NULL; i++)
+		gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(
+					taskedit->priority),
+				_(priorities[i].title));
 #else
 	taskedit->priority = gtk_combo_box_entry_new_text();
+	for(i = 0; priorities[i].title != NULL; i++)
+		gtk_combo_box_append_text(GTK_COMBO_BOX(taskedit->priority),
+				_(priorities[i].title));
 #endif
 	entry = gtk_bin_get_child(GTK_BIN(taskedit->priority));
 	gtk_entry_set_text(GTK_ENTRY(entry), task_get_priority(task));
