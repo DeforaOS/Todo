@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Todo 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-21 00:49+0200\n"
+"POT-Creation-Date: 2015-04-21 01:31+0200\n"
 "PO-Revision-Date: 2015-04-21 00:54+0200\n"
 "Last-Translator: Carolina Rocha <carolina@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -15,126 +15,127 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/main.c:58
-msgid "Usage: todo\n"
+#: ../src/main.c:77
+#, c-format
+msgid "Usage: %s\n"
 msgstr ""
 
-#: ../src/taskedit.c:65
-msgid "Edit task: "
-msgstr ""
-
-#: ../src/taskedit.c:75
-msgid "Title:"
-msgstr ""
-
-#: ../src/taskedit.c:85
-msgid "Priority:"
-msgstr ""
-
-#: ../src/taskedit.c:99
-msgid "Description:"
-msgstr ""
-
-#: ../src/todo.c:113
-msgid "Done"
-msgstr ""
-
-#: ../src/todo.c:115
-msgid "Title"
-msgstr ""
-
-#: ../src/todo.c:117
-msgid "Beginning"
-msgstr ""
-
-#: ../src/todo.c:118
-msgid "Completion"
-msgstr ""
-
-#: ../src/todo.c:128
+#: ../src/priority.c:25
 msgid "Unknown"
 msgstr ""
 
-#: ../src/todo.c:129
+#: ../src/priority.c:26
 msgid "Low"
 msgstr ""
 
-#: ../src/todo.c:130
+#: ../src/priority.c:27
 msgid "Medium"
 msgstr ""
 
-#: ../src/todo.c:131
+#: ../src/priority.c:28
 msgid "High"
 msgstr ""
 
-#: ../src/todo.c:132
+#: ../src/priority.c:29
 msgid "Urgent"
 msgstr ""
 
-#: ../src/todo.c:146 ../src/todo.c:473
+#: ../src/taskedit.c:67
+msgid "Edit task: "
+msgstr ""
+
+#: ../src/taskedit.c:77
+msgid "Title:"
+msgstr ""
+
+#: ../src/taskedit.c:87
+msgid "Priority:"
+msgstr ""
+
+#: ../src/taskedit.c:108
+msgid "Description:"
+msgstr ""
+
+#: ../src/todo.c:114
+msgid "Done"
+msgstr ""
+
+#: ../src/todo.c:116
+msgid "Title"
+msgstr ""
+
+#: ../src/todo.c:118
+msgid "Beginning"
+msgstr ""
+
+#: ../src/todo.c:119
+msgid "Completion"
+msgstr ""
+
+#: ../src/todo.c:133 ../src/todo.c:460
 msgid "New task"
 msgstr ""
 
-#: ../src/todo.c:147
+#: ../src/todo.c:134
 msgid "Edit task"
 msgstr ""
 
-#: ../src/todo.c:151 ../src/todo.c:154
+#: ../src/todo.c:138 ../src/todo.c:141
 msgid "Select all"
 msgstr ""
 
-#: ../src/todo.c:157
+#: ../src/todo.c:144
 msgid "Delete task"
 msgstr ""
 
-#: ../src/todo.c:161
+#: ../src/todo.c:148
 msgid "Preferences"
 msgstr ""
 
-#: ../src/todo.c:192
+#: ../src/todo.c:179
 msgid "View..."
 msgstr ""
 
-#: ../src/todo.c:196
+#: ../src/todo.c:183
 msgid "All tasks"
 msgstr ""
 
-#: ../src/todo.c:200
+#: ../src/todo.c:187
 msgid "Completed tasks"
 msgstr ""
 
-#: ../src/todo.c:204
+#: ../src/todo.c:191
 msgid "Remaining tasks"
 msgstr ""
 
-#: ../src/todo.c:313
+#: ../src/todo.c:300
 msgid "Priority"
 msgstr ""
 
-#: ../src/todo.c:383
+#: ../src/todo.c:370
 msgid "TODO-list manager for the DeforaOS desktop"
 msgstr ""
 
-#: ../src/todo.c:389
+#: ../src/todo.c:376
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/todo.c:419 ../src/todo.c:424
+#: ../src/todo.c:406 ../src/todo.c:411
 msgid "Error"
 msgstr ""
 
-#: ../src/todo.c:526
+#: ../src/todo.c:513
 msgid "Are you sure you want to delete the selected task(s)?"
 msgstr ""
 
-#: ../src/todo.c:615
+#: ../src/todo.c:602
 msgid "Time: "
 msgstr ""
 
-#: ../src/todo.c:624 ../src/todo.c:633
+#: ../src/todo.c:611 ../src/todo.c:620
 msgid ":"
 msgstr ""
 
-#: ../src/todo.c:1001 ../src/todo.c:1006
+#: ../src/todo.c:988 ../src/todo.c:993
 msgid "Question"
 msgstr ""
