@@ -1,3 +1,4 @@
 ../src/main.c
+../src/priority.c
 ../src/taskedit.c
 ../src/todo.c
