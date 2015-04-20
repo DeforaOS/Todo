@@ -1,5 +1,6 @@
 [Desktop Entry]
-Name=Todo
+Name=DeforaOS Todo
+GenericName=Todo list
 Comment=Remember what you have to do
 TryExec=todo
 Exec=todo
