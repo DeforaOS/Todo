@@ -26,6 +26,9 @@
 #define _(string) gettext(string)
 
 /* constants */
+#ifndef PROGNAME
+# define PROGNAME	"todo"
+#endif
 #ifndef PREFIX
 # define PREFIX		"/usr/local"
 #endif
@@ -55,7 +58,7 @@ static int _todo(void)
 /* usage */
 static int _usage(void)
 {
-	fputs(_("Usage: todo\n"), stderr);
+	fprintf(stderr, _("Usage: %s\n"), PROGNAME);
 	return 1;
 }
 
