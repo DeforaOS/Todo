@@ -1,0 +1,140 @@
+# $Id$
+# Copyright (c) 2015 Pierre Pronchery <khorben@defora.org>
+# This file is distributed under the same license as the Todo package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Todo 0.1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-21 00:49+0200\n"
+"PO-Revision-Date: 2015-04-21 00:54+0200\n"
+"Last-Translator: Carolina Rocha <carolina@defora.org>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/main.c:58
+msgid "Usage: todo\n"
+msgstr ""
+
+#: ../src/taskedit.c:65
+msgid "Edit task: "
+msgstr ""
+
+#: ../src/taskedit.c:75
+msgid "Title:"
+msgstr ""
+
+#: ../src/taskedit.c:85
+msgid "Priority:"
+msgstr ""
+
+#: ../src/taskedit.c:99
+msgid "Description:"
+msgstr ""
+
+#: ../src/todo.c:113
+msgid "Done"
+msgstr ""
+
+#: ../src/todo.c:115
+msgid "Title"
+msgstr ""
+
+#: ../src/todo.c:117
+msgid "Beginning"
+msgstr ""
+
+#: ../src/todo.c:118
+msgid "Completion"
+msgstr ""
+
+#: ../src/todo.c:128
+msgid "Unknown"
+msgstr ""
+
+#: ../src/todo.c:129
+msgid "Low"
+msgstr ""
+
+#: ../src/todo.c:130
+msgid "Medium"
+msgstr ""
+
+#: ../src/todo.c:131
+msgid "High"
+msgstr ""
+
+#: ../src/todo.c:132
+msgid "Urgent"
+msgstr ""
+
+#: ../src/todo.c:146 ../src/todo.c:473
+msgid "New task"
+msgstr ""
+
+#: ../src/todo.c:147
+msgid "Edit task"
+msgstr ""
+
+#: ../src/todo.c:151 ../src/todo.c:154
+msgid "Select all"
+msgstr ""
+
+#: ../src/todo.c:157
+msgid "Delete task"
+msgstr ""
+
+#: ../src/todo.c:161
+msgid "Preferences"
+msgstr ""
+
+#: ../src/todo.c:192
+msgid "View..."
+msgstr ""
+
+#: ../src/todo.c:196
+msgid "All tasks"
+msgstr ""
+
+#: ../src/todo.c:200
+msgid "Completed tasks"
+msgstr ""
+
+#: ../src/todo.c:204
+msgid "Remaining tasks"
+msgstr ""
+
+#: ../src/todo.c:313
+msgid "Priority"
+msgstr ""
+
+#: ../src/todo.c:383
+msgid "TODO-list manager for the DeforaOS desktop"
+msgstr ""
+
+#: ../src/todo.c:389
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/todo.c:419 ../src/todo.c:424
+msgid "Error"
+msgstr ""
+
+#: ../src/todo.c:526
+msgid "Are you sure you want to delete the selected task(s)?"
+msgstr ""
+
+#: ../src/todo.c:615
+msgid "Time: "
+msgstr ""
+
+#: ../src/todo.c:624 ../src/todo.c:633
+msgid ":"
+msgstr ""
+
+#: ../src/todo.c:1001 ../src/todo.c:1006
+msgid "Question"
+msgstr ""
