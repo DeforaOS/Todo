@@ -245,7 +245,7 @@ static void _new_view(Todo * todo)
 		gtk_list_store_append(todo->priorities, &iter);
 		gtk_list_store_set(todo->priorities, &iter,
 				0, _todo_priorities[i].priority,
-				1, _todo_priorities[i].title, -1);
+				1, _(_todo_priorities[i].title), -1);
 	}
 	todo->filter = gtk_tree_model_filter_new(GTK_TREE_MODEL(todo->store),
 			NULL);
