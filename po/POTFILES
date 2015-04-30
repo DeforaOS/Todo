@@ -2,3 +2,4 @@
 ../src/priority.c
 ../src/taskedit.c
 ../src/todo.c
+../src/window.c
