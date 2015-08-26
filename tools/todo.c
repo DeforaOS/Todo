@@ -18,6 +18,10 @@
 #define EMBEDDED
 #include <stdlib.h>
 #include <Desktop/Mailer/plugin.h>
+
+#include "../src/priority.c"
+#include "../src/task.c"
+#include "../src/taskedit.c"
 #include "../src/todo.c"
 
 
