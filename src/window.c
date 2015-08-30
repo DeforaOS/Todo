@@ -39,6 +39,10 @@
 #define _(string) gettext(string)
 #define N_(string) (string)
 
+#ifndef PROGNAME
+# define PROGNAME	"todo"
+#endif
+
 
 /* TodoWindow */
 /* private */
@@ -80,6 +84,7 @@ static void _todowindow_on_view_remaining_tasks(gpointer data);
 
 /* help menu */
 static void _todowindow_on_help_about(gpointer data);
+static void _todowindow_on_help_contents(gpointer data);
 #endif
 
 /* constants */
@@ -137,6 +142,8 @@ static const DesktopMenu _view_menu[] =
 };
 static const DesktopMenu _help_menu[] =
 {
+	{ N_("_Contents"), G_CALLBACK(_todowindow_on_help_contents),
+		"help-contents", 0, GDK_KEY_F1 },
 	{ N_("_About"), G_CALLBACK(_todowindow_on_help_about),
 #if GTK_CHECK_VERSION(2, 6, 0)
 		GTK_STOCK_ABOUT, 0, 0 },
@@ -357,5 +364,12 @@ static void _todowindow_on_help_about(gpointer data)
 	TodoWindow * todo = data;
 
 	todo_about(todo->todo);
+}
+
+
+/* todowindow_on_help_contents */
+static void _todowindow_on_help_contents(gpointer data)
+{
+	desktop_help_contents(PACKAGE, PROGNAME);
 }
 #endif
