@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Todo 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 01:40+0200\n"
+"POT-Creation-Date: 2015-08-31 01:58+0200\n"
 "PO-Revision-Date: 2010-04-23 14:35+0200\n"
 "Last-Translator: Pierre Pronchery <khorben@defora.org>\n"
 "Language-Team: French\n"
@@ -141,58 +141,62 @@ msgstr ":"
 msgid "Question"
 msgstr "Question"
 
-#: ../src/window.c:102
+#: ../src/window.c:107
 msgid "_New"
 msgstr "_Nouvelle tâche"
 
-#: ../src/window.c:104 ../src/window.c:151
+#: ../src/window.c:109 ../src/window.c:158
 msgid "_Edit"
 msgstr "É_dition"
 
-#: ../src/window.c:107
+#: ../src/window.c:112
 msgid "_Close"
 msgstr "_Fermer"
 
-#: ../src/window.c:113
+#: ../src/window.c:118
 msgid "Select _All"
 msgstr "Sélectionner _tout"
 
-#: ../src/window.c:121
+#: ../src/window.c:126
 msgid "_Delete"
 msgstr "_Supprimer"
 
-#: ../src/window.c:124
+#: ../src/window.c:129
 msgid "_Preferences"
 msgstr "_Préférences"
 
-#: ../src/window.c:130
+#: ../src/window.c:135
 msgid "_All tasks"
 msgstr "_Toutes les tâches"
 
-#: ../src/window.c:132
+#: ../src/window.c:137
 msgid "_Completed tasks"
 msgstr "Tâches _complétées"
 
-#: ../src/window.c:134
+#: ../src/window.c:139
 msgid "_Remaining tasks"
 msgstr "Tâches _restantes"
 
-#: ../src/window.c:140
+#: ../src/window.c:145
+msgid "_Contents"
+msgstr "_Sommaire"
+
+#: ../src/window.c:147
 msgid "_About"
 msgstr "À _propos"
 
-#: ../src/window.c:150
+#: ../src/window.c:157
 msgid "_File"
 msgstr "_Fichier"
 
-#: ../src/window.c:152
+#: ../src/window.c:159
 msgid "_View"
 msgstr "_Vue"
 
-#: ../src/window.c:153
+#: ../src/window.c:160
 msgid "_Help"
 msgstr "_Aide"
 
-#: ../src/window.c:188
+#: ../src/window.c:195
 msgid "Todo"
 msgstr "Todo"

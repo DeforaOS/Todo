@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Todo 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 01:40+0200\n"
+"POT-Creation-Date: 2015-08-31 01:58+0200\n"
 "PO-Revision-Date: 2015-04-21 00:54+0200\n"
 "Last-Translator: Ana Carolina Rocha <carolina@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -141,58 +141,62 @@ msgstr ":"
 msgid "Question"
 msgstr "Pregunta"
 
-#: ../src/window.c:102
+#: ../src/window.c:107
 msgid "_New"
 msgstr "_Nuevo"
 
-#: ../src/window.c:104 ../src/window.c:151
+#: ../src/window.c:109 ../src/window.c:158
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/window.c:107
+#: ../src/window.c:112
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: ../src/window.c:113
+#: ../src/window.c:118
 msgid "Select _All"
 msgstr "Seleccionar _todo"
 
-#: ../src/window.c:121
+#: ../src/window.c:126
 msgid "_Delete"
 msgstr "_Eliminar tarea"
 
-#: ../src/window.c:124
+#: ../src/window.c:129
 msgid "_Preferences"
 msgstr "_Preferencias"
 
-#: ../src/window.c:130
+#: ../src/window.c:135
 msgid "_All tasks"
 msgstr "_Todas las tareas"
 
-#: ../src/window.c:132
+#: ../src/window.c:137
 msgid "_Completed tasks"
 msgstr "Tarea _finalizada"
 
-#: ../src/window.c:134
+#: ../src/window.c:139
 msgid "_Remaining tasks"
 msgstr "Tareas _restantes"
 
-#: ../src/window.c:140
+#: ../src/window.c:145
+msgid "_Contents"
+msgstr "_Contenidos"
+
+#: ../src/window.c:147
 msgid "_About"
 msgstr "Acerca _de"
 
-#: ../src/window.c:150
+#: ../src/window.c:157
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../src/window.c:152
+#: ../src/window.c:159
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/window.c:153
+#: ../src/window.c:160
 msgid "_Help"
 msgstr "_Ayuda"
 
-#: ../src/window.c:188
+#: ../src/window.c:195
 msgid "Todo"
 msgstr "Todo"
