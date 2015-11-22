@@ -195,7 +195,7 @@ TodoWindow * todowindow_new(void)
 	gtk_window_set_title(GTK_WINDOW(todo->window), _("Todo"));
 	g_signal_connect_swapped(todo->window, "delete-event", G_CALLBACK(
 				_todowindow_on_closex), todo);
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 #ifndef EMBEDDED
 	/* menubar */
 	widget = desktop_menubar_create(_menubar, todo, group);

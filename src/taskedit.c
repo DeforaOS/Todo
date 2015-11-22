@@ -84,9 +84,9 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	g_signal_connect_swapped(taskedit->window, "delete-event", G_CALLBACK(
 				_on_taskedit_cancel), taskedit);
 	group = gtk_size_group_new(GTK_SIZE_GROUP_HORIZONTAL);
-	vbox = gtk_vbox_new(FALSE, 4);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
 	/* title */
-	hbox = gtk_hbox_new(FALSE, 4);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	widget = gtk_label_new(_("Title:"));
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 	gtk_size_group_add_widget(group, widget);
@@ -96,7 +96,7 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	gtk_box_pack_start(GTK_BOX(hbox), taskedit->title, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	/* priority */
-	hbox = gtk_hbox_new(FALSE, 4);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	widget = gtk_label_new(_("Priority:"));
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
 	gtk_size_group_add_widget(group, widget);
@@ -134,7 +134,7 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 				description, -1);
 	gtk_container_add(GTK_CONTAINER(scrolled), taskedit->description);
 	gtk_box_pack_start(GTK_BOX(vbox), scrolled, TRUE, TRUE, 0);
-	bbox = gtk_hbutton_box_new();
+	bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing(GTK_BOX(bbox), 4);
 	widget = gtk_button_new_from_stock(GTK_STOCK_CANCEL);

@@ -184,7 +184,7 @@ Todo * todo_new(GtkWidget * window, GtkAccelGroup * group)
 		return NULL;
 	/* main window */
 	todo->window = window;
-	vbox = gtk_vbox_new(FALSE, 0);
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	todo->widget = vbox;
 	/* toolbar */
 	widget = desktop_toolbar_create(_toolbar, todo, group);
@@ -604,8 +604,8 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_window_set_modal(GTK_WINDOW(popup), TRUE);
 		gtk_window_set_transient_for(GTK_WINDOW(popup), GTK_WINDOW(
 					todo->window));
-		vbox = gtk_vbox_new(FALSE, 4);
-		hbox = gtk_hbox_new(FALSE, 4);
+		vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
+		hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 		if((tim = (id == TD_COL_START) ? task_get_start(task)
 					: task_get_end(task)) == 0)
 			tim = time(NULL);
