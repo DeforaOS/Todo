@@ -38,7 +38,7 @@
 #include "../src/todo.c"
 
 
-/* Mailing-lists */
+/* Todo */
 /* private */
 /* types */
 typedef struct _MailerPlugin TodoPlugin;
