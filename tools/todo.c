@@ -96,7 +96,7 @@ static MailerPlugin * _todo_init(MailerPluginHelper * helper)
 		return NULL;
 	}
 	todo->helper = helper;
-	todo->widget = gtk_vbox_new(FALSE, 4);
+	todo->widget = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
 	widget = todo_get_widget(todo->todo);
 	gtk_box_pack_start(GTK_BOX(todo->widget), widget, TRUE, TRUE, 0);
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(todo->todo->view),
