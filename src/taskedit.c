@@ -88,7 +88,11 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	/* title */
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	widget = gtk_label_new(_("Title:"));
+#if GTK_CHECK_VERSION(3, 0, 0)
+	g_object_set(widget, "halign", GTK_ALIGN_START, NULL);
+#else
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+#endif
 	gtk_size_group_add_widget(group, widget);
 	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 	taskedit->title = gtk_entry_new();
@@ -98,7 +102,11 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	/* priority */
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
 	widget = gtk_label_new(_("Priority:"));
+#if GTK_CHECK_VERSION(3, 0, 0)
+	g_object_set(widget, "halign", GTK_ALIGN_START, NULL);
+#else
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+#endif
 	gtk_size_group_add_widget(group, widget);
 	gtk_box_pack_start(GTK_BOX(hbox), widget, FALSE, TRUE, 0);
 #if GTK_CHECK_VERSION(3, 0, 0)
@@ -119,7 +127,11 @@ TaskEdit * taskedit_new(Todo * todo, Task * task)
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	/* description */
 	widget = gtk_label_new(_("Description:"));
+#if GTK_CHECK_VERSION(3, 0, 0)
+	g_object_set(widget, "halign", GTK_ALIGN_START, NULL);
+#else
 	gtk_misc_set_alignment(GTK_MISC(widget), 0.0, 0.5);
+#endif
 	gtk_size_group_add_widget(group, widget);
 	gtk_box_pack_start(GTK_BOX(vbox), widget, FALSE, TRUE, 0);
 	scrolled = gtk_scrolled_window_new(NULL, NULL);
