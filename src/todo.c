@@ -463,7 +463,7 @@ Task * todo_task_add(Todo * todo, Task * task)
 			return NULL;
 		if((filename = _todo_task_get_new_filename()) == NULL)
 		{
-			todo_error(todo, error_get(), 0);
+			todo_error(todo, error_get(NULL), 0);
 			task_delete(task);
 			return NULL;
 		}
@@ -841,13 +841,13 @@ int todo_task_reload_all(Todo * todo)
 	Task * task;
 
 	if((filename = _todo_task_get_directory()) == NULL)
-		return todo_error(todo, error_get(), 1);
+		return todo_error(todo, error_get(NULL), 1);
 	if((dir = opendir(filename)) == NULL)
 	{
 		if(errno != ENOENT)
 		{
 			error_set("%s: %s", filename, strerror(errno));
-			ret = todo_error(todo, error_get(), 1);
+			ret = todo_error(todo, error_get(NULL), 1);
 		}
 	}
 	else
@@ -863,7 +863,7 @@ int todo_task_reload_all(Todo * todo)
 				continue; /* XXX report error */
 			if((task = task_new_from_file(filename)) == NULL)
 			{
-				todo_error(NULL, error_get(), 1);
+				todo_error(NULL, error_get(NULL), 1);
 				continue;
 			}
 			if(todo_task_add(todo, task) == NULL)
