@@ -57,7 +57,8 @@
 	</refsect1>
 	<refsect1 id="options">
 		<title>Options</title>
-		<para>No option is available on the command line.</para>
+		<para><command>&name;</command> does not accept options on the command
+			line.</para>
 	</refsect1>
 	<refsect1 id="bugs">
 		<title>Bugs</title>
