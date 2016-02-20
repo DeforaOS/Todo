@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <libintl.h>
 #include <gtk/gtk.h>
+#include <Desktop.h>
 #include "priority.h"
 #include "taskedit.h"
 #define _(string) gettext(string)
