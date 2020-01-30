@@ -28,7 +28,9 @@
 
 
 
-#define EMBEDDED
+#ifndef EMBEDDED
+# define EMBEDDED
+#endif
 #include <stdlib.h>
 #include <Desktop/Mailer/plugin.h>
 
