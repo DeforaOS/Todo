@@ -640,7 +640,7 @@ void todo_task_cursor_changed(Todo * todo)
 		gtk_box_pack_start(GTK_BOX(hbox), button, FALSE, TRUE, 0);
 		/* close button */
 		button = gtk_button_new();
-		image = gtk_image_new_from_stock(GTK_STOCK_CLOSE,
+		image = gtk_image_new_from_icon_name("gtk-close",
 				GTK_ICON_SIZE_MENU);
 		gtk_button_set_image(GTK_BUTTON(button), image);
 		gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
@@ -1218,6 +1218,7 @@ static void _todo_on_task_done_toggled(GtkCellRendererToggle * renderer,
 {
 	Todo * todo = data;
 	GtkTreePath * treepath;
+	(void) renderer;
 
 	treepath = gtk_tree_path_new_from_string(path);
 	todo_task_toggle_done(todo, treepath);
@@ -1231,6 +1232,7 @@ static void _todo_on_task_priority_edited(GtkCellRendererText * renderer,
 {
 	Todo * todo = data;
 	GtkTreePath * treepath;
+	(void) renderer;
 
 	treepath = gtk_tree_path_new_from_string(path);
 	todo_task_set_priority(todo, treepath, priority);
@@ -1244,6 +1246,7 @@ static void _todo_on_task_title_edited(GtkCellRendererText * renderer,
 {
 	Todo * todo = data;
 	GtkTreePath * treepath;
+	(void) renderer;
 
 	treepath = gtk_tree_path_new_from_string(path);
 	todo_task_set_title(todo, treepath, title);
