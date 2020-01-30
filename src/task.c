@@ -212,7 +212,7 @@ int task_set_done(Task * task, int done)
 /* task_set_end */
 int task_set_end(Task * task, time_t end)
 {
-	char buf[16];
+	char buf[32];
 
 	if(end == 0)
 		return config_set(task->config, NULL, "end", NULL);
