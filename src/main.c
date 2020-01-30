@@ -39,8 +39,8 @@
 #define _(string) gettext(string)
 
 /* constants */
-#ifndef PROGNAME
-# define PROGNAME	"todo"
+#ifndef PROGNAME_TODO
+# define PROGNAME_TODO	"todo"
 #endif
 #ifndef PREFIX
 # define PREFIX		"/usr/local"
@@ -68,7 +68,7 @@ static int _todo(void)
 	TodoWindow * todo;
 
 	if((todo = todowindow_new()) == NULL)
-		return error_print(PACKAGE);
+		return error_print(PROGNAME_TODO);
 	gtk_main();
 	todowindow_delete(todo);
 	return 0;
@@ -78,7 +78,7 @@ static int _todo(void)
 /* error */
 static int _error(char const * message, int ret)
 {
-	fputs(PROGNAME ": ", stderr);
+	fputs(PROGNAME_TODO ": ", stderr);
 	perror(message);
 	return ret;
 }
@@ -87,7 +87,7 @@ static int _error(char const * message, int ret)
 /* usage */
 static int _usage(void)
 {
-	fprintf(stderr, _("Usage: %s\n"), PROGNAME);
+	fprintf(stderr, _("Usage: %s\n"), PROGNAME_TODO);
 	return 1;
 }
 

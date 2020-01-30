@@ -51,6 +51,10 @@ static char const _license[] = "All rights reserved.\n"
 #define _(string) gettext(string)
 #define N_(string) (string)
 
+#ifndef PROGNAME_TODO
+# define PROGNAME_TODO	"todo"
+#endif
+
 
 /* Todo */
 /* private */
@@ -428,7 +432,7 @@ int todo_error(Todo * todo, char const * message, int ret)
 
 static int _error_text(char const * message, int ret)
 {
-	fputs(PACKAGE ": ", stderr);
+	fputs(PROGNAME_TODO ": ", stderr);
 	fputs(message, stderr);
 	fputc('\n', stderr);
 	return ret;
