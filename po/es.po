@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Todo 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 00:20+0100\n"
+"POT-Creation-Date: 2020-01-31 01:18+0100\n"
 "PO-Revision-Date: 2015-04-21 00:54+0200\n"
 "Last-Translator: Ana Carolina Rocha <carolina@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -73,7 +73,7 @@ msgstr "Comienzo"
 msgid "Completion"
 msgstr "Terminación"
 
-#: ../src/todo.c:149 ../src/todo.c:476
+#: ../src/todo.c:149 ../src/todo.c:477
 msgid "New task"
 msgstr "Nueva tarea"
 
@@ -121,23 +121,23 @@ msgstr "TODO-administrador de listas para el escritorio de DeforaOS"
 msgid "translator-credits"
 msgstr "Ana Carolina Rocha <carolina@defora.org>"
 
-#: ../src/todo.c:422 ../src/todo.c:427
+#: ../src/todo.c:423 ../src/todo.c:428
 msgid "Error"
 msgstr "Error"
 
-#: ../src/todo.c:529
+#: ../src/todo.c:530
 msgid "Are you sure you want to delete the selected task(s)?"
 msgstr "Está seguro que desea eliminar la(s) tarea(s) seleccionada(s)?"
 
-#: ../src/todo.c:618
+#: ../src/todo.c:619
 msgid "Time: "
 msgstr "Tiempo: "
 
-#: ../src/todo.c:627 ../src/todo.c:636
+#: ../src/todo.c:628 ../src/todo.c:637
 msgid ":"
 msgstr ":"
 
-#: ../src/todo.c:1004 ../src/todo.c:1009
+#: ../src/todo.c:1005 ../src/todo.c:1010
 msgid "Question"
 msgstr "Pregunta"
 
