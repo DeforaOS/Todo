@@ -391,7 +391,8 @@ void todo_about(Todo * todo)
 	desktop_about_dialog_set_translator_credits(todo->about,
 			_("translator-credits"));
 	desktop_about_dialog_set_version(todo->about, VERSION);
-	desktop_about_dialog_set_website(todo->about, "http://www.defora.org/");
+	desktop_about_dialog_set_website(todo->about,
+			"https://www.defora.org/");
 	g_signal_connect_swapped(todo->about, "delete-event", G_CALLBACK(
 				_about_on_closex), todo);
 	gtk_widget_show(todo->about);
