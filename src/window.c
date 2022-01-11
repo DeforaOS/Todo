@@ -39,8 +39,8 @@
 #define _(string) gettext(string)
 #define N_(string) (string)
 
-#ifndef PROGNAME
-# define PROGNAME	"todo"
+#ifndef PROGNAME_TODO
+# define PROGNAME_TODO	"todo"
 #endif
 
 
@@ -370,6 +370,6 @@ static void _todowindow_on_help_about(gpointer data)
 /* todowindow_on_help_contents */
 static void _todowindow_on_help_contents(gpointer data)
 {
-	desktop_help_contents(PACKAGE, PROGNAME);
+	desktop_help_contents(PACKAGE, PROGNAME_TODO);
 }
 #endif
