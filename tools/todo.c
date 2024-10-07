@@ -28,16 +28,9 @@
 
 
 
-#ifndef EMBEDDED
-# define EMBEDDED
-#endif
 #include <stdlib.h>
 #include <Desktop/Mailer/plugin.h>
-
-#include "../src/priority.c"
-#include "../src/task.c"
-#include "../src/taskedit.c"
-#include "../src/todo.c"
+#include "../include/Todo.h"
 
 
 /* Todo */
@@ -88,6 +81,7 @@ static MailerPlugin * _todo_init(MailerPluginHelper * helper)
 {
 	TodoPlugin * todo;
 	GtkWidget * widget;
+	GtkTreeViewColumn * column;
 	size_t i;
 
 	if((todo = malloc(sizeof(*todo))) == NULL)
@@ -101,12 +95,13 @@ static MailerPlugin * _todo_init(MailerPluginHelper * helper)
 	todo->widget = gtk_box_new(GTK_ORIENTATION_VERTICAL, 4);
 	widget = todo_get_widget(todo->todo);
 	gtk_box_pack_start(GTK_BOX(todo->widget), widget, TRUE, TRUE, 0);
-	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(todo->todo->view),
-			FALSE);
+	widget = todo_get_view(todo->todo);
+	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(widget), FALSE);
 	for(i = 0; i < TD_COL_COUNT; i++)
-		if(todo->todo->columns[i] != NULL && i != TD_COL_TITLE)
-			gtk_tree_view_column_set_visible(todo->todo->columns[i],
-					FALSE);
+		if((column = todo_get_view_column(todo->todo, i)) == NULL)
+			continue;
+		else if(i != TD_COL_TITLE)
+			gtk_tree_view_column_set_visible(column, FALSE);
 	gtk_widget_show_all(todo->widget);
 	return todo;
 }

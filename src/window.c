@@ -335,7 +335,7 @@ static void _todowindow_on_view_all_tasks(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_set_view(todo->todo, TODO_VIEW_ALL_TASKS);
+	todo_set_filter(todo->todo, TODO_FILTER_ALL_TASKS);
 }
 
 
@@ -344,7 +344,7 @@ static void _todowindow_on_view_completed_tasks(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_set_view(todo->todo, TODO_VIEW_COMPLETED_TASKS);
+	todo_set_filter(todo->todo, TODO_FILTER_COMPLETED_TASKS);
 }
 
 
@@ -353,7 +353,7 @@ static void _todowindow_on_view_remaining_tasks(gpointer data)
 {
 	TodoWindow * todo = data;
 
-	todo_set_view(todo->todo, TODO_VIEW_REMAINING_TASKS);
+	todo_set_filter(todo->todo, TODO_FILTER_REMAINING_TASKS);
 }
 
 
