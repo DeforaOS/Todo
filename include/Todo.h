@@ -28,30 +28,67 @@
 
 
 
-#ifndef TODO_TODO_H
-# define TODO_TODO_H
+#ifndef DESKTOP_TODO_H
+# define DESKTOP_TODO_H
 
-# include "../include/Todo.h"
-# include "task.h"
+# include <gtk/gtk.h>
 
 
 /* Todo */
+/* types */
+typedef struct _Todo Todo;
+
+typedef enum _TodoColumn
+{
+	TD_COL_TASK,
+	TD_COL_DONE,
+	TD_COL_TITLE,
+	TD_COL_START,
+	TD_COL_DISPLAY_START,
+	TD_COL_END,
+	TD_COL_DISPLAY_END,
+	TD_COL_PRIORITY,
+	TD_COL_DISPLAY_PRIORITY,
+	TD_COL_CATEGORY
+} TodoColumn;
+#define TD_COL_LAST TD_COL_CATEGORY
+#define TD_COL_COUNT (TD_COL_LAST + 1)
+
+typedef enum _TodoFilter
+{
+	TODO_FILTER_ALL_TASKS = 0,
+	TODO_FILTER_COMPLETED_TASKS,
+	TODO_FILTER_REMAINING_TASKS
+} TodoFilter;
+# define TODO_FILTER_LAST TODO_FILTER_REMAINING_TASKS
+# define TODO_FILTER_COUNT (TODO_FILTER_LAST + 1)
+
+typedef enum _TodoPriority
+{
+	TODO_PRIORITY_UNKNOWN = 0,
+	TODO_PRIORITY_LOW,
+	TODO_PRIORITY_MEDIUM,
+	TODO_PRIORITY_HIGH,
+	TODO_PRIORITY_URGENT
+} TodoPriority;
+
+
 /* functions */
-/* tasks */
-Task * todo_task_add(Todo * todo, Task * task);
-void todo_task_delete_selected(Todo * todo);
-void todo_task_remove_all(Todo * todo);
+Todo * todo_new(GtkWidget * window, GtkAccelGroup * group);
+void todo_delete(Todo * todo);
 
 /* accessors */
-void todo_task_set_priority(Todo * todo, GtkTreePath * path,
-		char const * priority);
-void todo_task_set_title(Todo * todo, GtkTreePath * path, char const * title);
+unsigned int todo_get_filter(Todo * todo);
+GtkWidget * todo_get_view(Todo * todo);
+GtkTreeViewColumn * todo_get_view_column(Todo * todo, unsigned i);
+GtkWidget * todo_get_widget(Todo * todo);
 
-void todo_task_cursor_changed(Todo * todo);
-void todo_task_edit(Todo * todo);
-int todo_task_reload_all(Todo * todo);
-void todo_task_save_all(Todo * todo);
-void todo_task_select_all(Todo * todo);
-void todo_task_toggle_done(Todo * todo, GtkTreePath * path);
+void todo_set_filter(Todo * todo, unsigned int filter);
 
-#endif /* !TODO_TODO_H */
+/* useful */
+void todo_about(Todo * todo);
+int todo_error(Todo * todo, char const * message, int ret);
+
+void todo_show_preferences(Todo * todo, gboolean show);
+
+#endif /* !DESKTOP_TODO_H */

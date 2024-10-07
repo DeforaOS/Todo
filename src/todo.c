@@ -1,6 +1,6 @@
 /* $Id$ */
 static char _copyright[] =
-"Copyright © 2009-2022 Pierre Pronchery <khorben@defora.org>";
+"Copyright © 2009-2024 Pierre Pronchery <khorben@defora.org>";
 /* This file is part of DeforaOS Desktop Todo */
 static char const _license[] = "All rights reserved.\n"
 "\n"
@@ -59,12 +59,6 @@ static char const _license[] = "All rights reserved.\n"
 /* Todo */
 /* private */
 /* types */
-typedef enum _TodoColumn { TD_COL_TASK, TD_COL_DONE, TD_COL_TITLE, TD_COL_START,
-	TD_COL_DISPLAY_START, TD_COL_END, TD_COL_DISPLAY_END, TD_COL_PRIORITY,
-	TD_COL_DISPLAY_PRIORITY, TD_COL_CATEGORY } TodoColumn;
-#define TD_COL_LAST TD_COL_CATEGORY
-#define TD_COL_COUNT (TD_COL_LAST + 1)
-
 struct _Todo
 {
 	GtkWidget * window;
@@ -74,7 +68,7 @@ struct _Todo
 	GtkListStore * priorities;
 	GtkTreeModel * filter;
 	GtkTreeModel * filter_sort;
-	TodoView filter_view;
+	TodoFilter filter_view;
 	GtkWidget * view;
 	GtkTreeViewColumn * columns[TD_COL_COUNT];
 	GtkWidget * about;
@@ -99,7 +93,7 @@ static void _todo_on_delete(gpointer data);
 #ifdef EMBEDDED
 static void _todo_on_preferences(gpointer data);
 #endif
-static void _todo_on_view_as(gpointer data);
+static void _todo_on_filter_as(gpointer data);
 
 /* view */
 static void _todo_on_task_activated(gpointer data);
@@ -110,9 +104,9 @@ static void _todo_on_task_priority_edited(GtkCellRendererText * renderer,
 		gchar * path, gchar * priority, gpointer data);
 static void _todo_on_task_title_edited(GtkCellRendererText * renderer,
 		gchar * path, gchar * title, gpointer data);
-static void _todo_on_view_all_tasks(gpointer data);
-static void _todo_on_view_completed_tasks(gpointer data);
-static void _todo_on_view_remaining_tasks(gpointer data);
+static void _todo_on_filter_all_tasks(gpointer data);
+static void _todo_on_filter_completed_tasks(gpointer data);
+static void _todo_on_filter_remaining_tasks(gpointer data);
 
 static gboolean _todo_on_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
 		gpointer data);
@@ -194,19 +188,19 @@ Todo * todo_new(GtkWidget * window, GtkAccelGroup * group)
 	widget = desktop_toolbar_create(_toolbar, todo, group);
 	toolitem = gtk_menu_tool_button_new(NULL, _("View..."));
 	g_signal_connect_swapped(toolitem, "clicked", G_CALLBACK(
-				_todo_on_view_as), todo);
+				_todo_on_filter_as), todo);
 	menu = gtk_menu_new();
 	menuitem = gtk_menu_item_new_with_label(_("All tasks"));
 	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
-				_todo_on_view_all_tasks), todo);
+				_todo_on_filter_all_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Completed tasks"));
 	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
-				_todo_on_view_completed_tasks), todo);
+				_todo_on_filter_completed_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	menuitem = gtk_menu_item_new_with_label(_("Remaining tasks"));
 	g_signal_connect_swapped(menuitem, "activate", G_CALLBACK(
-				_todo_on_view_remaining_tasks), todo);
+				_todo_on_filter_remaining_tasks), todo);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_widget_show_all(menu);
 	gtk_menu_tool_button_set_menu(GTK_MENU_TOOL_BUTTON(toolitem), menu);
@@ -252,7 +246,7 @@ static void _new_view(Todo * todo)
 	}
 	todo->filter = gtk_tree_model_filter_new(GTK_TREE_MODEL(todo->store),
 			NULL);
-	todo->filter_view = TODO_VIEW_ALL_TASKS;
+	todo->filter_view = TODO_FILTER_ALL_TASKS;
 	gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(
 				todo->filter), _todo_on_filter_view, todo,
 			NULL);
@@ -345,10 +339,26 @@ void todo_delete(Todo * todo)
 
 
 /* accessors */
-/* todo_get_view */
-TodoView todo_get_view(Todo * todo)
+/* todo_get_filter */
+TodoFilter todo_get_filter(Todo * todo)
 {
 	return todo->filter_view;
+}
+
+
+/* todo_get_view */
+GtkWidget * todo_get_view(Todo * todo)
+{
+	return todo->view;
+}
+
+
+/* todo_get_view_column */
+GtkTreeViewColumn * todo_get_view_column(Todo * todo, unsigned int i)
+{
+	if(i >= 0 && i <= TD_COL_LAST)
+		return todo->columns[i];
+	return NULL;
 }
 
 
@@ -359,8 +369,8 @@ GtkWidget * todo_get_widget(Todo * todo)
 }
 
 
-/* todo_set_view */
-void todo_set_view(Todo * todo, TodoView view)
+/* todo_set_filter */
+void todo_set_filter(Todo * todo, TodoFilter view)
 {
 	todo->filter_view = view;
 	gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(todo->filter));
@@ -1111,30 +1121,30 @@ static void _todo_task_save(Todo * todo, GtkTreeIter * iter)
 
 
 /* callbacks */
-/* todo_on_view_all_tasks */
-static void _todo_on_view_all_tasks(gpointer data)
+/* todo_on_filter_all_tasks */
+static void _todo_on_filter_all_tasks(gpointer data)
 {
 	Todo * todo = data;
 
-	todo_set_view(todo, TODO_VIEW_ALL_TASKS);
+	todo_set_filter(todo, TODO_FILTER_ALL_TASKS);
 }
 
 
-/* todo_on_view_completed_tasks */
-static void _todo_on_view_completed_tasks(gpointer data)
+/* todo_on_filter_completed_tasks */
+static void _todo_on_filter_completed_tasks(gpointer data)
 {
 	Todo * todo = data;
 
-	todo_set_view(todo, TODO_VIEW_COMPLETED_TASKS);
+	todo_set_filter(todo, TODO_FILTER_COMPLETED_TASKS);
 }
 
 
-/* todo_on_view_remaining_tasks */
-static void _todo_on_view_remaining_tasks(gpointer data)
+/* todo_on_filter_remaining_tasks */
+static void _todo_on_filter_remaining_tasks(gpointer data)
 {
 	Todo * todo = data;
 
-	todo_set_view(todo, TODO_VIEW_REMAINING_TASKS);
+	todo_set_filter(todo, TODO_FILTER_REMAINING_TASKS);
 }
 
 
@@ -1177,15 +1187,15 @@ static void _todo_on_preferences(gpointer data)
 #endif
 
 
-/* todo_on_view_as */
-static void _todo_on_view_as(gpointer data)
+/* todo_on_filter_as */
+static void _todo_on_filter_as(gpointer data)
 {
 	Todo * todo = data;
-	TodoView view;
+	TodoFilter filter;
 
-	view = todo_get_view(todo);
-	view = (view + 1) % TODO_VIEW_COUNT;
-	todo_set_view(todo, view);
+	filter = todo_get_filter(todo);
+	filter = (filter + 1) % TODO_FILTER_COUNT;
+	todo_set_filter(todo, filter);
 }
 
 
@@ -1268,14 +1278,14 @@ static gboolean _todo_on_filter_view(GtkTreeModel * model, GtkTreeIter * iter,
 
 	switch(todo->filter_view)
 	{
-		case TODO_VIEW_COMPLETED_TASKS:
+		case TODO_FILTER_COMPLETED_TASKS:
 			gtk_tree_model_get(model, iter, TD_COL_DONE, &done, -1);
 			return done ? TRUE : FALSE;
-		case TODO_VIEW_REMAINING_TASKS:
+		case TODO_FILTER_REMAINING_TASKS:
 			gtk_tree_model_get(model, iter, TD_COL_DONE, &done, -1);
 			return done ? FALSE : TRUE;
 		default:
-		case TODO_VIEW_ALL_TASKS:
+		case TODO_FILTER_ALL_TASKS:
 			return TRUE;
 	}
 }
