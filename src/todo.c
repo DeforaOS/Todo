@@ -356,7 +356,7 @@ GtkWidget * todo_get_view(Todo * todo)
 /* todo_get_view_column */
 GtkTreeViewColumn * todo_get_view_column(Todo * todo, unsigned int i)
 {
-	if(i >= 0 && i <= TD_COL_LAST)
+	if(i <= TD_COL_LAST)
 		return todo->columns[i];
 	return NULL;
 }
