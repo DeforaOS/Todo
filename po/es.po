@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Todo 0.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 01:18+0100\n"
+"POT-Creation-Date: 2024-10-10 02:13+0200\n"
 "PO-Revision-Date: 2015-04-21 00:54+0200\n"
 "Last-Translator: Ana Carolina Rocha <carolina@defora.org>\n"
 "Language-Team: Spanish\n"
@@ -57,87 +57,87 @@ msgstr "Prioridad"
 msgid "Description:"
 msgstr "Descripción:"
 
-#: ../src/todo.c:130
+#: ../src/todo.c:124
 msgid "Done"
 msgstr "Listo"
 
-#: ../src/todo.c:132
+#: ../src/todo.c:126
 msgid "Title"
 msgstr "Título"
 
-#: ../src/todo.c:134
+#: ../src/todo.c:128
 msgid "Beginning"
 msgstr "Comienzo"
 
-#: ../src/todo.c:135
+#: ../src/todo.c:129
 msgid "Completion"
 msgstr "Terminación"
 
-#: ../src/todo.c:149 ../src/todo.c:477
+#: ../src/todo.c:143 ../src/todo.c:487
 msgid "New task"
 msgstr "Nueva tarea"
 
-#: ../src/todo.c:150
+#: ../src/todo.c:144
 msgid "Edit task"
 msgstr "Editar tarea"
 
-#: ../src/todo.c:154 ../src/todo.c:157
+#: ../src/todo.c:148 ../src/todo.c:151
 msgid "Select all"
 msgstr "Seleccionar todo"
 
-#: ../src/todo.c:160
+#: ../src/todo.c:154
 msgid "Delete task"
 msgstr "Eliminar tarea"
 
-#: ../src/todo.c:164
+#: ../src/todo.c:158
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../src/todo.c:195
+#: ../src/todo.c:189
 msgid "View..."
 msgstr "Vista..."
 
-#: ../src/todo.c:199
+#: ../src/todo.c:193
 msgid "All tasks"
 msgstr "Todas las tareas"
 
-#: ../src/todo.c:203
+#: ../src/todo.c:197
 msgid "Completed tasks"
 msgstr "Tarea finalizada"
 
-#: ../src/todo.c:207
+#: ../src/todo.c:201
 msgid "Remaining tasks"
 msgstr "Tareas restantes"
 
-#: ../src/todo.c:316
+#: ../src/todo.c:310
 msgid "Priority"
 msgstr "Prioridad"
 
-#: ../src/todo.c:386
+#: ../src/todo.c:396
 msgid "TODO-list manager for the DeforaOS desktop"
 msgstr "TODO-administrador de listas para el escritorio de DeforaOS"
 
-#: ../src/todo.c:392
+#: ../src/todo.c:402
 msgid "translator-credits"
 msgstr "Ana Carolina Rocha <carolina@defora.org>"
 
-#: ../src/todo.c:423 ../src/todo.c:428
+#: ../src/todo.c:433 ../src/todo.c:438
 msgid "Error"
 msgstr "Error"
 
-#: ../src/todo.c:530
+#: ../src/todo.c:540
 msgid "Are you sure you want to delete the selected task(s)?"
 msgstr "Está seguro que desea eliminar la(s) tarea(s) seleccionada(s)?"
 
-#: ../src/todo.c:619
+#: ../src/todo.c:629
 msgid "Time: "
 msgstr "Tiempo: "
 
-#: ../src/todo.c:628 ../src/todo.c:637
+#: ../src/todo.c:638 ../src/todo.c:647
 msgid ":"
 msgstr ":"
 
-#: ../src/todo.c:1005 ../src/todo.c:1010
+#: ../src/todo.c:1015 ../src/todo.c:1020
 msgid "Question"
 msgstr "Pregunta"
 
